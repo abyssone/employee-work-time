@@ -6,6 +6,8 @@ import org.junit.jupiter.api.TestInstance;
 import ru.abyssone.employeeworktime.exception.IllegalDateValue;
 
 import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -54,6 +56,23 @@ class ShiftWorkScheduleTest {
             () -> assertEquals(0, ws.getWorkHours(LocalDate.parse("2000-01-05"))),
             () -> assertEquals(0, ws.getWorkHours(LocalDate.parse("2000-01-09"))),
             () -> assertEquals(0, ws.getWorkHours(LocalDate.parse("2000-01-10"))));
+    }
+
+    @Test
+    void checkGettingOfWorkHours_whenDateRange() {
+        Map<LocalDate, Integer> expected = new HashMap<>() {{
+            put(LocalDate.parse("2000-01-03"), 8);
+            put(LocalDate.parse("2000-01-04"), 0);
+            put(LocalDate.parse("2000-01-05"), 0);
+            put(LocalDate.parse("2000-01-06"), 8);
+        }};
+        Map<LocalDate, Integer> received = ws.getWorkHours(
+                LocalDate.parse("2000-01-03"),
+                LocalDate.parse("2000-01-07"));
+
+        for (Map.Entry<LocalDate, Integer> entry : expected.entrySet()) {
+            assertEquals(entry.getValue(), received.get(entry.getKey()));
+        }
     }
 
 }
