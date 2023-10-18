@@ -1,24 +1,23 @@
 package ru.abyssone.employeeworktime;
 
-import ru.abyssone.employeeworktime.entity.timemodel.FixedWorkWeek;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
+import ru.abyssone.employeeworktime.entity.Contract;
+import ru.abyssone.employeeworktime.service.ContractService;
 
-import java.time.LocalDate;
 import java.util.Map;
 
-//import org.springframework.boot.SpringApplication;
-//import org.springframework.boot.autoconfigure.SpringBootApplication;
-//
-//@SpringBootApplication
+@SpringBootApplication
 public class EmployeeWorkTimeApplication {
 
     public static void main(String[] args) {
-//        SpringApplication.run(EmployeeWorkTimeApplication.class, args);
+        ApplicationContext ac = SpringApplication.run(EmployeeWorkTimeApplication.class, args);
+        ContractService cs = ac.getBean(ContractService.class);
 
-        FixedWorkWeek week = new FixedWorkWeek(new Integer[]{6, 6, 7, 7, 8, 0, 0});
+        Map<Long,Contract> contracts = cs.findAll();
 
-        Map<LocalDate, Integer> workHours = week.getWorkHours(LocalDate.now(), LocalDate.parse("2023-10-30"));
-        System.out.println(workHours);
-        System.out.println();
+        System.out.println(contracts);
     }
 
 }
