@@ -26,7 +26,8 @@ public class Employee {
 
     private String name;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "employee")
+    // todo: возможно заменить на LAZY
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "employee")
     private Set<Contract> contracts = new HashSet<>();
     //private Optional<Account> account;
 

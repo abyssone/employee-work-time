@@ -1,12 +1,26 @@
 package ru.abyssone.employeeworktime.entity.timemodel;
 
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import ru.abyssone.employeeworktime.exception.IncorrectArgsNumber;
 
 import java.time.*;
 import java.util.*;
 
+@Entity
+@Getter
+@Setter
+@NoArgsConstructor
 public class FixedWorkWeek extends WorkTimeModel{
-    private final Map<DayOfWeek, Integer> workHours;
+
+    @ElementCollection
+    @CollectionTable(name = "week_day_work_hours_mapping",
+            joinColumns = {@JoinColumn(name = "fixed_work_week_id", referencedColumnName = "id")})
+    @MapKeyColumn(name = "day_of_week")
+    @Column(name = "work_hours")
+    private Map<DayOfWeek, Integer> workHours;
 
     {
         workHours = new LinkedHashMap<>();
@@ -14,8 +28,6 @@ public class FixedWorkWeek extends WorkTimeModel{
             workHours.put(dayOfWeek, 0);
         }
     }
-
-    public FixedWorkWeek() {}
 
     public FixedWorkWeek(Integer[] workHours) {
         if (workHours.length != DayOfWeek.values().length)
@@ -49,10 +61,5 @@ public class FixedWorkWeek extends WorkTimeModel{
         }
 
         return result;
-    }
-
-    //todo: удалить
-    public Map<DayOfWeek, Integer> getWorkHoursCopy() {
-        return new LinkedHashMap<>(this.workHours);
     }
 }

@@ -2,6 +2,7 @@ package ru.abyssone.employeeworktime.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import ru.abyssone.employeeworktime.entity.timemodel.WorkTimeModel;
 
 import java.time.LocalDate;
 import java.util.Objects;
@@ -30,7 +31,9 @@ public class Contract {
     private LocalDate entryIntoForceDate;
     private LocalDate expirationDate;
     private String position;
-    //private WorkTimeModel workTimeModel;
+
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private WorkTimeModel workTimeModel;
 
     public void setEmployee(Employee employee) {
         if (this.employee != null && this.employee.equals(employee)) {

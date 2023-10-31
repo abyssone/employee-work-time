@@ -1,5 +1,11 @@
 package ru.abyssone.employeeworktime.entity.timemodel;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import ru.abyssone.employeeworktime.exception.IllegalDateValue;
 
 import java.time.LocalDate;
@@ -9,14 +15,15 @@ import java.util.Map;
 
 import static java.time.temporal.ChronoUnit.DAYS;
 
+@Entity
+@Getter
+@Setter
+@NoArgsConstructor
 public class ShiftWorkSchedule extends WorkTimeModel {
     private LocalDate startWorkSchedule;
     private Integer workDaysNumber;
     private Integer daysOffNumber;
     private Integer workHours;
-
-    public ShiftWorkSchedule() {
-    }
 
     public ShiftWorkSchedule(LocalDate startWorkSchedule, Integer workDaysNumber, Integer daysOffNumber, Integer workHours) {
         this.startWorkSchedule = startWorkSchedule;
