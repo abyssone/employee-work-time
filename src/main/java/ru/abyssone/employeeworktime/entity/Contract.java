@@ -1,22 +1,55 @@
 package ru.abyssone.employeeworktime.entity;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import ru.abyssone.employeeworktime.entity.timemodel.WorkTimeModel;
+import jakarta.persistence.*;
+import lombok.*;
 
 import java.time.LocalDate;
-import java.util.Optional;
+import java.util.Objects;
+import java.util.UUID;
 
-@Data
+@Entity
+@Table(name = "contracts")
+@Getter
+@Setter
 @NoArgsConstructor
 public class Contract {
-    private Long id;
+
+    /*
+    * UUID используется для корректной работы equals и hashCode вновь созданных объектов,
+    * еще не сохраненных в бд
+    * */
+    @Id
+    private UUID id = UUID.randomUUID();
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "employee_id")
+    @Setter(AccessLevel.NONE) // Замена lombok сеттера для обеспечения связи сущностей
     private Employee employee;
+
     private LocalDate dateOfConclusion;
     private LocalDate entryIntoForceDate;
-    private Optional<LocalDate> expirationDate;
-    // private ? exceptionalDays
+    private LocalDate expirationDate;
     private String position;
-    private WorkTimeModel workTimeModel;
-    // private map<LocalDate, Rep> workTimeReports
+    //private WorkTimeModel workTimeModel;
+
+    public void setEmployee(Employee employee) {
+        if (this.employee != null && this.employee.equals(employee)) {
+            return;
+        }
+        this.employee = employee;
+        employee.addContract(this);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Contract contract = (Contract) o;
+        return Objects.equals(id, contract.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }

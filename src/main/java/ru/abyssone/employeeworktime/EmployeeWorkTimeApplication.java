@@ -1,24 +1,33 @@
 package ru.abyssone.employeeworktime;
 
-import ru.abyssone.employeeworktime.entity.timemodel.FixedWorkWeek;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ConfigurableApplicationContext;
+import ru.abyssone.employeeworktime.entity.Contract;
+import ru.abyssone.employeeworktime.entity.Employee;
+import ru.abyssone.employeeworktime.repository.ContractRepository;
+import ru.abyssone.employeeworktime.repository.EmployeeRepository;
 
-import java.time.LocalDate;
-import java.util.Map;
-
-//import org.springframework.boot.SpringApplication;
-//import org.springframework.boot.autoconfigure.SpringBootApplication;
-//
-//@SpringBootApplication
+@SpringBootApplication
 public class EmployeeWorkTimeApplication {
 
     public static void main(String[] args) {
-//        SpringApplication.run(EmployeeWorkTimeApplication.class, args);
+        ConfigurableApplicationContext context = SpringApplication.run(EmployeeWorkTimeApplication.class, args);
 
-        FixedWorkWeek week = new FixedWorkWeek(new Integer[]{6, 6, 7, 7, 8, 0, 0});
+        ContractRepository cr = context.getBean(ContractRepository.class);
+        EmployeeRepository er = context.getBean(EmployeeRepository.class);
 
-        Map<LocalDate, Integer> workHours = week.getWorkHours(LocalDate.now(), LocalDate.parse("2023-10-30"));
-        System.out.println(workHours);
+        Contract c = new Contract();
+        c.setPosition("developer");
+
+        Employee e = new Employee();
+        e.setName("name");
+        e.addContract(c);
+
+        er.save(e);
         System.out.println();
+
+
     }
 
 }
