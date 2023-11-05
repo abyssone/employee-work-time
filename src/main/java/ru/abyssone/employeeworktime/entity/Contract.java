@@ -32,6 +32,10 @@ public class Contract {
     @MapKey(name = "date")
     private Map<LocalDate, WorkTimeReport> workTimeReports = new HashMap<>();
 
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "contracts")
+    @MapKey(name = "date")
+    private Map<LocalDate, ExceptionalDay> exceptionalDays = new HashMap<>();
+
     private LocalDate dateOfConclusion;
     private LocalDate entryIntoForceDate;
     private LocalDate expirationDate;
@@ -53,6 +57,14 @@ public class Contract {
             return;
         }
         this.workTimeReports.put(workTimeReport.getDate(), workTimeReport);
+    }
+
+    public void addExceptionalDay(ExceptionalDay exceptionalDay) {
+        if (this.exceptionalDays.containsKey(exceptionalDay.getDate())) {
+            return;
+        }
+        this.exceptionalDays.put(exceptionalDay.getDate(), exceptionalDay);
+        exceptionalDay.addContract(this);
     }
 
     @Override
