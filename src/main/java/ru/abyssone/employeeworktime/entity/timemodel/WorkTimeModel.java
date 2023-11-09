@@ -1,12 +1,13 @@
 package ru.abyssone.employeeworktime.entity.timemodel;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDate;
-import java.util.Map;
 import java.util.UUID;
 
 @Entity
@@ -18,7 +19,4 @@ public abstract class WorkTimeModel {
 
     @Id
     private UUID id = UUID.randomUUID();
-
-    public abstract Integer getWorkHours(LocalDate date);
-    public abstract Map<LocalDate, Integer> getWorkHours(LocalDate start, LocalDate end);
 }

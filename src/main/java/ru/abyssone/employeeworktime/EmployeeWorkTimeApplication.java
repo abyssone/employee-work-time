@@ -13,12 +13,12 @@ import ru.abyssone.employeeworktime.repository.ContractRepository;
 import ru.abyssone.employeeworktime.repository.EmployeeRepository;
 import ru.abyssone.employeeworktime.repository.WorkTimeModelRepository;
 import ru.abyssone.employeeworktime.repository.WorkTimeReportRepository;
+import ru.abyssone.employeeworktime.service.timemodel.WorkTimeModelService;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.Optional;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @SpringBootApplication
 public class EmployeeWorkTimeApplication {
@@ -31,13 +31,36 @@ public class EmployeeWorkTimeApplication {
         WorkTimeModelRepository wtmr = context.getBean(WorkTimeModelRepository.class);
         WorkTimeReportRepository wtrr = context.getBean(WorkTimeReportRepository.class);
 
+        WorkTimeModelService wtms = context.getBean(WorkTimeModelService.class);
+
         // work time report
-        WorkTimeReport wtr = new WorkTimeReport();
-        wtr.setDate(LocalDate.parse("2000-01-01"));
-        TimePeriod tp = new TimePeriod();
-        tp.setEndTime(LocalTime.MIDNIGHT);
-        tp.setStartTime(LocalTime.now());
-        wtr.setWorkedTime(tp);
+//        FixedWorkWeek fixedWorkWeek = new FixedWorkWeek();
+//
+//        Map<DayOfWeek, TimePeriod> workHours = new LinkedHashMap<>();
+//        TimePeriod workDay = new TimePeriod();
+//        workDay.setStartTime(LocalTime.parse("08:00:00"));
+//        workDay.setEndTime(LocalTime.parse("17:00:00"));
+//
+//        workHours.put(DayOfWeek.MONDAY, workDay);
+//        workHours.put(DayOfWeek.TUESDAY, workDay);
+//        workHours.put(DayOfWeek.WEDNESDAY, workDay);
+//        workHours.put(DayOfWeek.THURSDAY, workDay);
+//        workHours.put(DayOfWeek.FRIDAY, workDay);
+//        workHours.put(DayOfWeek.SATURDAY, null);
+//        workHours.put(DayOfWeek.SUNDAY, null);
+//
+//        fixedWorkWeek.setWorkHours(workHours);
+//
+//        Contract contract = new Contract();
+//        contract.setWorkTimeModel(fixedWorkWeek);
+//
+//        cr.save(contract);
+
+        Optional<Contract> byId = cr.findById(UUID.fromString("2fec1458-37e0-472a-ab56-10db33c7f0da"));
+        Contract contract = byId.get();
+        TimePeriod workHoursForDate = wtms.getWorkHoursForDate(contract.getWorkTimeModel(), LocalDate.parse("2023-11-10"));
+        System.out.println();
+
 
 //        // shift work schedule
 //        ShiftWorkSchedule wtm1 = new ShiftWorkSchedule();

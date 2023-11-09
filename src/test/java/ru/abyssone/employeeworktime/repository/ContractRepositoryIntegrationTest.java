@@ -1,6 +1,5 @@
 package ru.abyssone.employeeworktime.repository;
 
-import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,14 +12,22 @@ import ru.abyssone.employeeworktime.entity.Contract;
 import ru.abyssone.employeeworktime.entity.Employee;
 import ru.abyssone.employeeworktime.entity.ExceptionalDay;
 import ru.abyssone.employeeworktime.entity.embedded.TimePeriod;
+import ru.abyssone.employeeworktime.entity.timemodel.FixedWorkWeek;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
+/*
+    Отключение оборачивания тестирующих методов в транзакции для наблюдения
+    изменений в бд при пошаговой отладке.
+ */
 @Transactional(propagation = Propagation.NOT_SUPPORTED)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @TestPropertySource(
@@ -52,6 +59,31 @@ class ContractRepositoryIntegrationTest {
         assertEquals(2, employees.size());
         assertTrue(employees.contains(e1));
         assertTrue(employees.contains(e2));
+    }
+
+    @Test
+    public void createFixedWorkWeek() {
+        FixedWorkWeek fixedWorkWeek = new FixedWorkWeek();
+
+        Map<DayOfWeek, TimePeriod> workHours = new LinkedHashMap<>();
+        TimePeriod workDay = new TimePeriod();
+        workDay.setStartTime(LocalTime.parse("08:00:00"));
+        workDay.setEndTime(LocalTime.parse("17:00:00"));
+
+        workHours.put(DayOfWeek.MONDAY, workDay);
+        workHours.put(DayOfWeek.TUESDAY, workDay);
+        workHours.put(DayOfWeek.WEDNESDAY, workDay);
+        workHours.put(DayOfWeek.THURSDAY, workDay);
+        workHours.put(DayOfWeek.FRIDAY, workDay);
+        workHours.put(DayOfWeek.SATURDAY, null);
+        workHours.put(DayOfWeek.SUNDAY, null);
+
+        fixedWorkWeek.setWorkHours(workHours);
+
+        Contract contract = new Contract();
+        contract.setWorkTimeModel(fixedWorkWeek);
+
+        contractRepository.save(contract);
     }
 
     @Test
