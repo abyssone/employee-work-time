@@ -19,4 +19,6 @@ public abstract class WorkTimeModel {
 
     @Id
     private UUID id = UUID.randomUUID();
+
+    private String title;
 }

@@ -2,11 +2,11 @@ package ru.abyssone.employeeworktime.service.timemodel;
 
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 import ru.abyssone.employeeworktime.entity.embedded.TimePeriod;
 import ru.abyssone.employeeworktime.entity.timemodel.FixedWorkWeek;
 import ru.abyssone.employeeworktime.entity.timemodel.ShiftWorkSchedule;
 import ru.abyssone.employeeworktime.entity.timemodel.WorkTimeModel;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.HashMap;

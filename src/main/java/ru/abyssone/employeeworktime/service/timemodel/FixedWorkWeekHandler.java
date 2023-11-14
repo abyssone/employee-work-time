@@ -1,7 +1,7 @@
 package ru.abyssone.employeeworktime.service.timemodel;
 
-import org.springframework.stereotype.Service;
 import ru.abyssone.employeeworktime.entity.embedded.TimePeriod;
+import org.springframework.stereotype.Service;
 import ru.abyssone.employeeworktime.entity.timemodel.FixedWorkWeek;
 import ru.abyssone.employeeworktime.entity.timemodel.WorkTimeModel;
 

@@ -1,5 +1,11 @@
 package ru.abyssone.employeeworktime.repository;
 
+import ru.abyssone.employeeworktime.entity.Contract;
+import ru.abyssone.employeeworktime.entity.Employee;
+import ru.abyssone.employeeworktime.entity.ExceptionalDay;
+import ru.abyssone.employeeworktime.entity.embedded.TimePeriod;
+import ru.abyssone.employeeworktime.entity.timemodel.FixedWorkWeek;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,11 +14,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import ru.abyssone.employeeworktime.entity.Contract;
-import ru.abyssone.employeeworktime.entity.Employee;
-import ru.abyssone.employeeworktime.entity.ExceptionalDay;
-import ru.abyssone.employeeworktime.entity.embedded.TimePeriod;
-import ru.abyssone.employeeworktime.entity.timemodel.FixedWorkWeek;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -119,6 +120,6 @@ class ContractRepositoryIntegrationTest {
 
         ExceptionalDay exDayFromDb = contractFromDb.getExceptionalDays().get(exceptionalDay.getDate());
         assertEquals(exceptionalDay.getInfo(), exDayFromDb.getInfo());
-        assertEquals(exceptionalDay.getWorkTime(), exDayFromDb.getWorkTime());
+        Assertions.assertEquals(exceptionalDay.getWorkTime(), exDayFromDb.getWorkTime());
     }
 }

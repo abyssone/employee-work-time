@@ -1,7 +1,6 @@
 package ru.abyssone.employeeworktime.entity.embedded;
 
 import jakarta.persistence.Embeddable;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
