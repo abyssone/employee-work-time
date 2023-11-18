@@ -21,7 +21,7 @@ public class Contract {
     @Id
     private UUID id = UUID.randomUUID();
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "employee_id")
     @Setter(AccessLevel.NONE) // Замена lombok сеттера для обеспечения связи сущностей
     private Employee employee;
@@ -37,7 +37,9 @@ public class Contract {
     private Map<LocalDate, ExceptionalDay> exceptionalDays = new HashMap<>();
 
     private LocalDate dateOfConclusion;
-    private LocalDate entryIntoForceDate;
+
+    // Может быть null
+    @Getter(AccessLevel.NONE)
     private LocalDate expirationDate;
     private String position;
 
@@ -45,7 +47,7 @@ public class Contract {
     private WorkTimeModel workTimeModel;
 
     public void setEmployee(Employee employee) {
-        if (this.employee != null && this.employee.equals(employee)) {
+        if (employee == null || (this.employee != null && this.employee.equals(employee))) {
             return;
         }
         this.employee = employee;
@@ -57,6 +59,11 @@ public class Contract {
             return;
         }
         this.workTimeReports.put(workTimeReport.getDate(), workTimeReport);
+    }
+
+    public Optional<LocalDate> getExpirationDate() {
+        if (this.expirationDate == null) return Optional.empty();
+        return Optional.of(this.expirationDate);
     }
 
     public void addExceptionalDay(ExceptionalDay exceptionalDay) {

@@ -19,6 +19,7 @@ public class WorkTimeReport {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private LocalDate date;
+    private AbsenceReason absenceReason;
 
     @Embedded
     private TimePeriod workedTime;

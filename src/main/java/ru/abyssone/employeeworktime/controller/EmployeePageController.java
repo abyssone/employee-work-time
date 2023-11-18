@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import ru.abyssone.employeeworktime.dto.GeneralEmployeeInfo;
 import ru.abyssone.employeeworktime.entity.Employee;
 import ru.abyssone.employeeworktime.service.EmployeeService;
 
@@ -29,8 +30,8 @@ public class EmployeePageController {
     }
 
     @PostMapping("/employee/create")
-    public String createEmployee(@ModelAttribute Employee employee) {
-        employeeService.save(employee);
+    public String createEmployee(@ModelAttribute GeneralEmployeeInfo employeeInfo) {
+        employeeService.save(employeeInfo);
         return "redirect:/page";
     }
 

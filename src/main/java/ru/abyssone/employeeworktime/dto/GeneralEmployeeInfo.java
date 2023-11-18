@@ -5,6 +5,7 @@ import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Getter
@@ -12,5 +13,5 @@ import java.util.UUID;
 public class GeneralEmployeeInfo {
     private UUID id;
     private String name;
-    private List<GeneralContractInfo> contracts = new ArrayList<>();
+    private Optional<GeneralContractInfo> contract;
 }

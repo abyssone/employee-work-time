@@ -21,4 +21,10 @@ public abstract class WorkTimeModel {
     private UUID id = UUID.randomUUID();
 
     private String title;
+
+    // Для dto и работы Query в repository
+    public WorkTimeModel(UUID id, String title) {
+        this.id = id;
+        this.title = title;
+    }
 }

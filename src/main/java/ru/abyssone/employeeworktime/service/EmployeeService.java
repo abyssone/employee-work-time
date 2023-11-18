@@ -14,9 +14,9 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class EmployeeService {
-    private final EmployeeRepository employeeRepository;
 
-    private final EmployeeMapper mapper;
+    private final EmployeeRepository employeeRepository;
+    private final EmployeeMapper employeeMapper;
 
     public List<Employee> findAll() {
         return employeeRepository.findAll();
@@ -24,21 +24,25 @@ public class EmployeeService {
 
     public Optional<Employee> findById(UUID id) {
         return employeeRepository.findById(id);
-
     }
 
     public List<GeneralEmployeeInfo> getAllGeneralEmployeeInfo() {
         List<Employee> all = employeeRepository.findAll();
-        return all.stream().map(mapper::toGeneralEmployeeInfo).toList();
+        return all.stream().map(employeeMapper::toGeneralEmployeeInfo).toList();
     }
 
     public Optional<GeneralEmployeeInfo> getGeneralEmployeeInfoById(UUID id) {
         Optional<Employee> employee = employeeRepository.findById(id);
-        GeneralEmployeeInfo employeeInfo = mapper.toGeneralEmployeeInfo(employee.get());
+        GeneralEmployeeInfo employeeInfo = employeeMapper.toGeneralEmployeeInfo(employee.get());
         return Optional.of(employeeInfo);
     }
 
     public void save(Employee employee) {
         employeeRepository.save(employee);
     }
+
+    public void save(GeneralEmployeeInfo employeeInfo) {
+        Employee employee = employeeMapper.toEmployee(employeeInfo);
+        employeeRepository.save(employee);
+    };
 }

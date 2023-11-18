@@ -1,14 +1,12 @@
 package ru.abyssone.employeeworktime.entity;
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @Entity
 @Table(name = "employees")
@@ -27,15 +25,22 @@ public class Employee {
     private String name;
 
     // todo: возможно заменить на LAZY
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "employee")
-    private Set<Contract> contracts = new HashSet<>();
+    // Optional
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "employee")
+    @Getter(AccessLevel.NONE)
+    private Contract contract;
     //private Optional<Account> account;
 
+    public Optional<Contract> getContract() {
+        if (this.contract == null) return Optional.empty();
+        return Optional.of(this.contract);
+    }
+
     public void addContract(Contract contract) {
-        if (this.contracts.contains(contract)) {
+        if (contract == null || (this.contract != null && this.contract.equals(contract))) {
             return;
         }
-        this.contracts.add(contract);
+        this.contract = contract;
         contract.setEmployee(this);
     }
 
