@@ -10,6 +10,10 @@ import lombok.Setter;
 
 import java.util.UUID;
 
+/**
+ * Класс абстрактной сущности "график работы". Необходим для реализации различных графиков работы,
+ * их хранения в базе данных и использования абстрактного типа в других сущностях.
+ */
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @Getter

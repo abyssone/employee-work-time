@@ -9,8 +9,12 @@ import ru.abyssone.employeeworktime.entity.embedded.TimePeriod;
 import java.time.DayOfWeek;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Optional;
 
+/**
+ * Реализация "графика фиксированной рабочей недели" абстрактной сущности "график работы" (WorkTimeModel).
+ * Содержит необходимые данные для вычисления рабочих и выходных дней при фиксированном графике.
+ * Структура: {День недели: время начала и конца рабочего времени / null}
+ */
 @Entity
 @Getter
 @Setter

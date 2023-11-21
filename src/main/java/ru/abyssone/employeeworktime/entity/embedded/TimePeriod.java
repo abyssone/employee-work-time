@@ -7,6 +7,9 @@ import lombok.Setter;
 import java.time.LocalTime;
 import java.util.Objects;
 
+/**
+ * Вспомогательный класс для хранения информации о промежутке времени в пределах одного дня
+ */
 @Embeddable
 @Getter
 @Setter

@@ -24,9 +24,8 @@ public class Employee {
 
     private String name;
 
-    // todo: возможно заменить на LAZY
     // Optional
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "employee")
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "employee")
     @Getter(AccessLevel.NONE)
     private Contract contract;
     //private Optional<Account> account;

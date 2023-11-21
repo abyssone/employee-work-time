@@ -1,9 +1,8 @@
 package ru.abyssone.employeeworktime.mapper;
 
-import lombok.RequiredArgsConstructor;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.springframework.beans.factory.annotation.Autowired;
+import ru.abyssone.employeeworktime.dto.FullEmployeeInfo;
 import ru.abyssone.employeeworktime.dto.GeneralEmployeeInfo;
 import ru.abyssone.employeeworktime.entity.Contract;
 import ru.abyssone.employeeworktime.entity.Employee;
@@ -15,6 +14,9 @@ public abstract class EmployeeMapper {
 
     @Autowired
     protected ContractMapper contractMapper;
+
+    @Autowired
+    protected ScheduleMapper scheduleMapper;
 
     public GeneralEmployeeInfo toGeneralEmployeeInfo(Employee employee) {
         GeneralEmployeeInfo empInfo = new GeneralEmployeeInfo();
@@ -39,5 +41,23 @@ public abstract class EmployeeMapper {
         employee.setName(employeeInfo.getName());
 
         return employee;
+    }
+
+    public FullEmployeeInfo toFullEmployeeInfo(Employee employee) {
+        FullEmployeeInfo empInfo = new FullEmployeeInfo();
+
+        empInfo.setId(employee.getId());
+        empInfo.setName(employee.getName());
+        if (employee.getContract().isEmpty()) {
+            empInfo.setSchedule(Optional.empty());
+            empInfo.setContract(Optional.empty());
+        } else {
+            empInfo.setSchedule(Optional.of(
+                    scheduleMapper.toScheduleDescription(employee.getContract().get().getWorkTimeModel())));
+            empInfo.setContract(Optional.of(
+                    contractMapper.toGeneralContractInfo(employee.getContract().get())));
+        }
+
+        return empInfo;
     }
 }

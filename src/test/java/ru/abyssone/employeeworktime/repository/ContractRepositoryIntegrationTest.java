@@ -104,7 +104,7 @@ class ContractRepositoryIntegrationTest {
 
         exceptionalDayRepository.save(exceptionalDay);
 
-        List<Contract> contractList = contractRepository.findAllFetchWorkTimeReports();
+        List<Contract> contractList = contractRepository.findAllFetchExceptionalDays();
 
         /*
             В exceptional day был добавлен только один contract

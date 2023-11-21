@@ -26,7 +26,6 @@ public class Contract {
     @Setter(AccessLevel.NONE) // Замена lombok сеттера для обеспечения связи сущностей
     private Employee employee;
 
-    // todo: Поменять на LAZY
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "contract_id")
     @MapKey(name = "date")
@@ -38,7 +37,7 @@ public class Contract {
 
     private LocalDate dateOfConclusion;
 
-    // Может быть null
+    // Optional
     @Getter(AccessLevel.NONE)
     private LocalDate expirationDate;
     private String position;

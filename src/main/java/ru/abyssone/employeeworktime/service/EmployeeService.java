@@ -2,6 +2,7 @@ package ru.abyssone.employeeworktime.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.abyssone.employeeworktime.dto.FullEmployeeInfo;
 import ru.abyssone.employeeworktime.dto.GeneralEmployeeInfo;
 import ru.abyssone.employeeworktime.entity.Employee;
 import ru.abyssone.employeeworktime.mapper.EmployeeMapper;
@@ -29,6 +30,13 @@ public class EmployeeService {
     public List<GeneralEmployeeInfo> getAllGeneralEmployeeInfo() {
         List<Employee> all = employeeRepository.findAll();
         return all.stream().map(employeeMapper::toGeneralEmployeeInfo).toList();
+    }
+
+    public FullEmployeeInfo getFullEmployeeInfo(UUID employeeId) {
+        Optional<Employee> employee = employeeRepository.findByIdFetchContract(employeeId);
+        if (employee.isEmpty()) throw new NullPointerException(
+                String.format("Employee with id:%d is not exist", employeeId));
+        return employeeMapper.toFullEmployeeInfo(employee.get());
     }
 
     public Optional<GeneralEmployeeInfo> getGeneralEmployeeInfoById(UUID id) {

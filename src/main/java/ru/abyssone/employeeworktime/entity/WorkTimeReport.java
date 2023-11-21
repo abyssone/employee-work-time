@@ -8,6 +8,9 @@ import ru.abyssone.employeeworktime.entity.embedded.TimePeriod;
 
 import java.time.LocalDate;
 
+/**
+ * Отчет о проведенном сотрудником времени на рабочем месте за конкретную дату.
+ */
 @Entity
 @Table(name = "work_time_reports")
 @Getter

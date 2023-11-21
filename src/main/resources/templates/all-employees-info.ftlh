@@ -26,20 +26,11 @@
                 <#if employee.contract.isPresent()>
                     <td>${employee.contract.get().position}</td>
                     <td>${employee.contract.get().dateOfConclusion}</td>
-                    <td><#switch employee.contract.get().state.name()>
-                        <#case "EXPIRED">
-                            Истек ${employee.contract.get().expirationDate.get()}
-                            <#break>
-                        <#case "ACTIVE">
-                            Активен до ${employee.contract.get().expirationDate.get()}
-                            <#break>
-                        <#case "UNLIMITED">
-                            Бессрочный
-                            <#break>
-                        <#default>
-                            Неизвестно
-                            <#break>
-                    </#switch></td>
+                    <td>
+                        <@components.contractStatus
+                            state=employee.contract.get().state
+                            expirationDate=employee.contract.get().expirationDate />
+                    </td>
                     <#else>
                         <td>-----</td>
                         <td>-----</td>
