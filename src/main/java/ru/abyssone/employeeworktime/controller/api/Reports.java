@@ -22,7 +22,7 @@ public class Reports {
                                                      @RequestParam("endDate") String endDate) {
 
         List<DailyWorkReport> dailyWorkReports = reportService
-                .getDailyWorkReports(contractId, LocalDate.parse(startDate), LocalDate.parse(endDate));
+                .getDailyWorkReports(contractId, startDate, endDate);
         return dailyWorkReports;
     }
 }

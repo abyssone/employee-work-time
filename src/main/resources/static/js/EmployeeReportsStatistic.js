@@ -9,7 +9,7 @@ console.log(contractId);
 btn.addEventListener("click", () => fetchFunc());
 
 function fetchFunc() {
-    if (contractId != null && contractId != 'null') {
+    if (contractId != null) {
         fetch(`/api/statistic?contractId=${contractId}&startDate=${startDateInput.value}&endDate=${endDateInput.value}`)
             .then(json => json.json())
             .then(data => updateTable(data))
@@ -26,11 +26,23 @@ function updateTable(data) {
 
     data.forEach(report => {
        let row = oneLineTag("tr");
-       let date = oneLineTag("td", { textContent : report.date});
-       let scheduledTime = oneLineTag("td",
-           { textContent : `${report.scheduledTime?.startTime} – ${report.scheduledTime?.endTime}`});
-       let actualWorkTime = oneLineTag("td",
-           { textContent : `${report.actualWorkTime?.startTime} – ${report.actualWorkTime?.endTime}`});
+
+       let date = oneLineTag("td", { textContent : toDDMMYYYYFormat(report.date)});
+
+       let scheduledTime = document.createElement("td");
+       if (report.scheduledTime && report.scheduledTime.startTime !== report.scheduledTime.endTime) {
+           scheduledTime.textContent = `${report.scheduledTime.startTime} – ${report.scheduledTime?.endTime}`;
+       } else {
+           scheduledTime.textContent = 'Выходной';
+       }
+
+        let actualWorkTime = document.createElement("td");
+        if (report.actualWorkedTime) {
+            actualWorkTime.textContent = `${report.actualWorkedTime.startTime} – ${report.actualWorkedTime.endTime}`;
+        } else {
+            actualWorkTime.textContent = '-----';
+        }
+
        let missedTime = oneLineTag("td", { textContent : report.missedTime});
        let overtime = oneLineTag("td", { textContent : report.overtime});
        let absenceReason = oneLineTag("td", { textContent : report.absenceReason});
@@ -42,6 +54,10 @@ function updateTable(data) {
        row.appendChild(absenceReason);
        tbody.appendChild(row);
     });
+}
+
+function toDDMMYYYYFormat(date) {
+    return date.toString().split('-').reverse().join('.');
 }
 
 function oneLineTag(tag,options){

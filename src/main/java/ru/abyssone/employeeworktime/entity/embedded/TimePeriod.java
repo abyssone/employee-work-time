@@ -1,6 +1,7 @@
 package ru.abyssone.employeeworktime.entity.embedded;
 
 import jakarta.persistence.Embeddable;
+import jakarta.persistence.PrePersist;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -28,5 +29,14 @@ public class TimePeriod {
     @Override
     public int hashCode() {
         return Objects.hash(startTime, endTime);
+    }
+
+    @PrePersist
+    private void correcting() {
+        if (this.getStartTime().isAfter(this.getEndTime())) {
+            LocalTime temp = this.startTime;
+            this.startTime = endTime;
+            this.endTime = temp;
+        }
     }
 }

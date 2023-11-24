@@ -5,12 +5,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.abyssone.employeeworktime.dto.ScheduleDescription;
 import ru.abyssone.employeeworktime.dto.ScheduleInfo;
+import ru.abyssone.employeeworktime.entity.embedded.TimePeriod;
 import ru.abyssone.employeeworktime.entity.timemodel.WorkTimeModel;
 import ru.abyssone.employeeworktime.mapper.ScheduleMapper;
 import ru.abyssone.employeeworktime.repository.WorkTimeModelObject;
 import ru.abyssone.employeeworktime.repository.WorkTimeModelRepository;
 
+import java.time.DayOfWeek;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Service
@@ -24,7 +27,18 @@ public class ScheduleService {
         WorkTimeModel model;
 
         switch (scheduleInfo.getType()) {
-            case FIXED_WORK_WEEK -> model = scheduleMapper.toFixedWorkWeek(scheduleInfo);
+            case FIXED_WORK_WEEK -> {
+                Set<DayOfWeek> dayOfWeeks = scheduleInfo.getWorkWeekHours().keySet();
+
+                for (DayOfWeek dayOfWeek : dayOfWeeks) {
+                    TimePeriod tp = scheduleInfo.getWorkWeekHours().get(dayOfWeek);
+
+                    if (tp == null || tp.getEndTime() == null || tp.getStartTime() == null) {
+                        scheduleInfo.getWorkWeekHours().put(dayOfWeek, null);
+                    }
+                }
+                model = scheduleMapper.toFixedWorkWeek(scheduleInfo);
+            }
             case SHIFT_WORK_SCHEDULE -> model = scheduleMapper.toShiftWorkSchedule(scheduleInfo);
             default -> throw new IllegalArgumentException(String.format("Неверный тип графика: %s",
                                                                         scheduleInfo.getType()));

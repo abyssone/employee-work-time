@@ -1,31 +1,28 @@
 package ru.abyssone.employeeworktime.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.abyssone.employeeworktime.dto.FullEmployeeInfo;
 import ru.abyssone.employeeworktime.dto.GeneralEmployeeInfo;
 import ru.abyssone.employeeworktime.entity.Employee;
 import ru.abyssone.employeeworktime.mapper.EmployeeMapper;
 import ru.abyssone.employeeworktime.repository.EmployeeRepository;
+import ru.abyssone.employeeworktime.service.util.Validator;
+import ru.abyssone.employeeworktime.service.util.exception.IllegalEmployeeException;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class EmployeeService {
 
     private final EmployeeRepository employeeRepository;
     private final EmployeeMapper employeeMapper;
-
-    public List<Employee> findAll() {
-        return employeeRepository.findAll();
-    }
-
-    public Optional<Employee> findById(UUID id) {
-        return employeeRepository.findById(id);
-    }
+    private final Validator validator;
 
     public List<GeneralEmployeeInfo> getAllGeneralEmployeeInfo() {
         List<Employee> all = employeeRepository.findAll();
@@ -45,12 +42,16 @@ public class EmployeeService {
         return Optional.of(employeeInfo);
     }
 
-    public void save(Employee employee) {
-        employeeRepository.save(employee);
-    }
-
-    public void save(GeneralEmployeeInfo employeeInfo) {
+    public void save(GeneralEmployeeInfo employeeInfo) throws IllegalEmployeeException{
         Employee employee = employeeMapper.toEmployee(employeeInfo);
-        employeeRepository.save(employee);
+
+        // Если entity не прошло валидацию, то оно не сохраняется в бд и передается дальше в контроллер
+        try {
+            validator.check(employee);
+            employeeRepository.save(employee);
+        } catch (IllegalEmployeeException ex) {
+            log.error(ex.getMessage());
+            throw new IllegalEmployeeException(ex.getMessage());
+        }
     };
 }

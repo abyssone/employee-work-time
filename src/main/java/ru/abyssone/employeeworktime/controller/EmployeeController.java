@@ -1,15 +1,14 @@
 package ru.abyssone.employeeworktime.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import ru.abyssone.employeeworktime.dto.FullEmployeeInfo;
 import ru.abyssone.employeeworktime.dto.GeneralEmployeeInfo;
 import ru.abyssone.employeeworktime.service.EmployeeService;
+import ru.abyssone.employeeworktime.service.util.exception.IllegalEmployeeException;
 
 import java.util.UUID;
 
@@ -30,7 +29,11 @@ public class EmployeeController {
 
     @PostMapping("/employee/create")
     public String createEmployee(@ModelAttribute GeneralEmployeeInfo employeeInfo) {
-        employeeService.save(employeeInfo);
+        try {
+            employeeService.save(employeeInfo);
+        } catch (IllegalEmployeeException exception) {
+            return "redirect:/employee/create";
+        }
         return "redirect:/";
     }
 
@@ -39,5 +42,10 @@ public class EmployeeController {
         FullEmployeeInfo fullEmployeeInfo = employeeService.getFullEmployeeInfo(id);
         model.addAttribute("employee", fullEmployeeInfo);
         return "employee-info";
+    }
+
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(IllegalEmployeeException.class)
+    public void exception() {
     }
 }

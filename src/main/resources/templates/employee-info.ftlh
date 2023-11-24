@@ -4,13 +4,13 @@
 
 <html lang="ru">
 <@components.head title="${employee.name}" />
-<body data-contractId="
+<body data-contractId=
     <#if employee.contract.isPresent()>
-        ${employee.contract.get().id}
+        "${employee.contract.get().id}"
     <#else >
-        null
+        ""
     </#if>
-">
+>
 
 <div class="container">
     <h3>Информация о сотруднике</h3>
@@ -26,15 +26,17 @@
     <#else >
         <p>Нет контракта</p>
     </#if>
-    <a href="/contract/create?employee_id=${employee.id}" class="btn btn-dark">
-        Добавить контракт
-    </a>
+    
+    <#if employee.contract.isPresent()>
+        <a class="btn dark-btn" href="/contract/${employee.contract.get().getId()}/report/create">Добавить отчет</a>
+    </#if>
 
     <div class="row">
-        Статистика за:
-        <input type="date" id="input-startDate" class="col-1"> -
-        <input type="date" id="input-endDate" class="col-1">
-        <button id="fetch-btn" class="btn btn-dark col-1">Fetch</button>
+        <p class="align-middle col-auto">Статистика за:</p>
+        <input type="date" id="input-startDate" class="col-2">
+        <p class="align-middle col-auto">–</p>
+        <input type="date" id="input-endDate" class="col-2">
+        <button id="fetch-btn" class="btn btn-dark col-1">Найти</button>
     </div>
     <div class="row">
         <table class="table">
@@ -55,5 +57,6 @@
 
 
 <script type="text/javascript" src="/js/EmployeeReportsStatistic.js"></script>
+<@components.bootstrapScript />
 </body>
 </html>

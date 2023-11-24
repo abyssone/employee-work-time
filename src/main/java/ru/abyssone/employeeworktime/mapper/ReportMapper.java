@@ -1,11 +1,14 @@
 package ru.abyssone.employeeworktime.mapper;
 
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import ru.abyssone.employeeworktime.dto.DailyWorkReport;
+import ru.abyssone.employeeworktime.dto.WorkTimeReportInfo;
 import ru.abyssone.employeeworktime.entity.AbsenceReason;
 import ru.abyssone.employeeworktime.entity.WorkTimeReport;
 import ru.abyssone.employeeworktime.entity.embedded.TimePeriod;
 
+import java.sql.Time;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -82,15 +85,17 @@ public abstract class ReportMapper {
         LocalTime actualStartTime = actualTime.getStartTime();
         LocalTime actualEndTime = actualTime.getEndTime();
 
-        // если работа началась позже графика: += MISSED TIME
-        // иначе: += OVERTIME
-
+        // Начало графика раньше чем начало рабочего времени сотрудника
         if (scheduledStartTime.isBefore(actualStartTime)) {
             timeDiff.put(TimeStatus.MISSED,
-                    timeDiff.get(TimeStatus.MISSED).plus(Duration.between(scheduledStartTime, actualStartTime)));
+                    timeDiff.get(TimeStatus.MISSED).plus(Duration.between(
+                            scheduledStartTime,
+                            actualStartTime.isBefore(scheduledEndTime) ? actualStartTime : scheduledEndTime)));
         } else {
             timeDiff.put(TimeStatus.OVERTIME,
-                    timeDiff.get(TimeStatus.OVERTIME).plus(Duration.between(actualStartTime, scheduledStartTime)));
+                    timeDiff.get(TimeStatus.OVERTIME).plus(Duration.between(
+                            actualStartTime,
+                            scheduledStartTime.isBefore(actualEndTime) ? scheduledStartTime : actualEndTime)));
         }
 
         // если работа завершилась раньше графика: += MISSED TIME
@@ -98,10 +103,14 @@ public abstract class ReportMapper {
 
         if (scheduledEndTime.isAfter(actualEndTime)) {
             timeDiff.put(TimeStatus.MISSED,
-                    timeDiff.get(TimeStatus.MISSED).plus(Duration.between(actualEndTime, scheduledEndTime)));
+                    timeDiff.get(TimeStatus.MISSED).plus(Duration.between(
+                            actualEndTime.isAfter(scheduledStartTime) ? actualEndTime : scheduledStartTime,
+                            scheduledEndTime)));
         } else {
             timeDiff.put(TimeStatus.OVERTIME,
-                    timeDiff.get(TimeStatus.OVERTIME).plus(Duration.between(scheduledEndTime, actualEndTime)));
+                    timeDiff.get(TimeStatus.OVERTIME).plus(Duration.between(
+                            scheduledEndTime.isAfter(actualStartTime) ? scheduledEndTime : actualStartTime,
+                            actualEndTime)));
         }
 
         return timeDiff;
@@ -110,4 +119,18 @@ public abstract class ReportMapper {
     protected String minutesToTimeFormat(long minutes) {
         return String.format("%d:%02d", minutes/60, minutes%60);
     }
+
+    public WorkTimeReport toWorkTimeReport(WorkTimeReportInfo info) {
+        WorkTimeReport workTimeReport = new WorkTimeReport();
+
+        workTimeReport.setDate(LocalDate.parse(info.getDate()));
+        workTimeReport.setAbsenceReason(AbsenceReason.valueOf(info.getAbsenceReason()));
+
+        TimePeriod workedTime = new TimePeriod();
+        workedTime.setStartTime(LocalTime.parse(info.getStartTime()));
+        workedTime.setEndTime(LocalTime.parse(info.getEndTime()));
+        workTimeReport.setWorkedTime(workedTime);
+
+        return workTimeReport;
+    };
 }

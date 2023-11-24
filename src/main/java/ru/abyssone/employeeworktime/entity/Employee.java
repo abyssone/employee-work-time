@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.util.*;
 
 @Entity
@@ -15,6 +16,10 @@ import java.util.*;
 @NoArgsConstructor
 public class Employee {
 
+    public enum Sex {
+        MALE, FEMALE
+    }
+
     /*
      * UUID используется для корректной работы equals и hashCode вновь созданных объектов,
      * еще не сохраненных в бд
@@ -23,6 +28,9 @@ public class Employee {
     private UUID id = UUID.randomUUID();
 
     private String name;
+    private String address;
+    private LocalDate BirthDate;
+    private Sex sex;
 
     // Optional
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "employee")

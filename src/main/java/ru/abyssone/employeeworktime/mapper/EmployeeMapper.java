@@ -23,6 +23,11 @@ public abstract class EmployeeMapper {
         empInfo.setId(employee.getId());
         empInfo.setName(employee.getName());
 
+        empInfo.setSex(employee.getSex().name());
+
+        empInfo.setAddress(employee.getAddress());
+        empInfo.setBirthDate(employee.getBirthDate());
+
         Optional<Contract> contract = employee.getContract();
 
         if(contract.isEmpty()) {
@@ -39,6 +44,9 @@ public abstract class EmployeeMapper {
 
         if (employeeInfo.getId() != null) employee.setId(employeeInfo.getId());
         employee.setName(employeeInfo.getName());
+        employee.setSex(Employee.Sex.valueOf(employeeInfo.getSex()));
+        employee.setAddress(employeeInfo.getAddress());
+        employee.setBirthDate(employeeInfo.getBirthDate());
 
         return employee;
     }
