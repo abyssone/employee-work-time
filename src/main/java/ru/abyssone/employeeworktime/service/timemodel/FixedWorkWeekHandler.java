@@ -1,7 +1,7 @@
 package ru.abyssone.employeeworktime.service.timemodel;
 
+import org.springframework.stereotype.Component;
 import ru.abyssone.employeeworktime.entity.embedded.TimePeriod;
-import org.springframework.stereotype.Service;
 import ru.abyssone.employeeworktime.entity.timemodel.FixedWorkWeek;
 import ru.abyssone.employeeworktime.entity.timemodel.WorkTimeModel;
 
@@ -11,7 +11,7 @@ import java.util.Map;
 
 import static java.time.temporal.ChronoUnit.DAYS;
 
-@Service
+@Component
 public class FixedWorkWeekHandler implements WorkTimeForDateHandler {
     @Override
     public TimePeriod getWorkTimeForDate(WorkTimeModel workTimeModel, LocalDate date) {

@@ -1,10 +1,10 @@
 package ru.abyssone.employeeworktime.service.timemodel;
 
+import org.springframework.stereotype.Component;
 import ru.abyssone.employeeworktime.entity.embedded.TimePeriod;
-import ru.abyssone.employeeworktime.exception.IllegalDateValue;
-import org.springframework.stereotype.Service;
 import ru.abyssone.employeeworktime.entity.timemodel.ShiftWorkSchedule;
 import ru.abyssone.employeeworktime.entity.timemodel.WorkTimeModel;
+import ru.abyssone.employeeworktime.exception.IllegalDateValue;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -13,7 +13,7 @@ import java.util.Map;
 
 import static java.time.temporal.ChronoUnit.DAYS;
 
-@Service
+@Component
 public class ShiftWorkScheduleHandler implements WorkTimeForDateHandler {
     @Override
     public TimePeriod getWorkTimeForDate(WorkTimeModel workTimeModel, LocalDate date) {

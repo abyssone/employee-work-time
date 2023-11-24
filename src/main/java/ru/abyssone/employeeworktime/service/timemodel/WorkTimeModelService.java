@@ -1,25 +1,26 @@
 package ru.abyssone.employeeworktime.service.timemodel;
 
-import jakarta.annotation.PostConstruct;
-import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 import ru.abyssone.employeeworktime.entity.embedded.TimePeriod;
 import ru.abyssone.employeeworktime.entity.timemodel.FixedWorkWeek;
 import ru.abyssone.employeeworktime.entity.timemodel.ShiftWorkSchedule;
 import ru.abyssone.employeeworktime.entity.timemodel.WorkTimeModel;
-import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
-@Service
-@RequiredArgsConstructor
+@Component
 public class WorkTimeModelService {
 
-    private final FixedWorkWeekHandler fixedWorkWeekHandler;
-    private final ShiftWorkScheduleHandler shiftWorkScheduleHandler;
-
     private Map<Class, WorkTimeForDateHandler> handlers = new HashMap<>();
+
+    public WorkTimeModelService(FixedWorkWeekHandler fixedWorkWeekHandler,
+                                ShiftWorkScheduleHandler shiftWorkScheduleHandler) {
+
+        this.handlers.put(FixedWorkWeek.class, fixedWorkWeekHandler);
+        this.handlers.put(ShiftWorkSchedule.class, shiftWorkScheduleHandler);
+    }
 
     public TimePeriod getWorkHoursForDate(WorkTimeModel model, LocalDate date) {
         return handlers.get(model.getClass()).getWorkTimeForDate(model, date);
@@ -36,11 +37,5 @@ public class WorkTimeModelService {
                                                                 LocalDate start,
                                                                 LocalDate end) {
         return handlers.get(model.getClass()).getWorkTimeForDatePeriod(model, start, end);
-    }
-
-    @PostConstruct
-    private void init() {
-        this.handlers.put(FixedWorkWeek.class, fixedWorkWeekHandler);
-        this.handlers.put(ShiftWorkSchedule.class, shiftWorkScheduleHandler);
     }
 }
