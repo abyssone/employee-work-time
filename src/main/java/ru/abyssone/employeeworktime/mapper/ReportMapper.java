@@ -27,6 +27,7 @@ public abstract class ReportMapper {
                                                                Map<LocalDate, WorkTimeReport> reports) {
 
         FullWorkReportsStatistic statistic = new FullWorkReportsStatistic();
+        List<DailyWorkReport> resultReports = new ArrayList<>();
 
         /*
          * Часы отсутствия и переработки за весь диапазон выборки
@@ -80,7 +81,7 @@ public abstract class ReportMapper {
                         missedMinutesForReason.get(reason) + timeDifference.get(TimeStatus.MISSED).toMinutes());
                 workReport.setAbsenceReason(reason);
             }
-            statistic.addReport(workReport);
+            resultReports.add(workReport);
         }
 
         statistic.setTotalMissed(this.minutesToTimeFormat(totalMissedMinutes));
@@ -90,10 +91,10 @@ public abstract class ReportMapper {
             statistic.getMissedForReason().put(entry.getKey(), this.minutesToTimeFormat(entry.getValue()));
         }
 
-        statistic.getReports().stream().sorted(
+        statistic.setReports(resultReports.stream().sorted(
                 (a, b) -> {
                     return a.getDate().isBefore(b.getDate()) ? -1 : b.getDate().isBefore(a.getDate()) ? 1 : 0;
-                }).collect(Collectors.toList());
+                }).collect(Collectors.toList()));
 
         return statistic;
     }

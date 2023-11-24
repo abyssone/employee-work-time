@@ -10,7 +10,6 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
-@Component
 public class WorkTimeModelService {
 
     private Map<Class, WorkTimeForDateHandler> handlers = new HashMap<>();

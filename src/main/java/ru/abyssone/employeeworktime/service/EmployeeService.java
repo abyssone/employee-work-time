@@ -29,6 +29,11 @@ public class EmployeeService {
         return all.stream().map(employeeMapper::toGeneralEmployeeInfo).toList();
     }
 
+    public List<GeneralEmployeeInfo> getGeneralEmployeeWithContractInfo() {
+        List<Employee> all = employeeRepository.findAllWithContract();
+        return all.stream().map(employeeMapper::toGeneralEmployeeInfo).toList();
+    }
+
     public FullEmployeeInfo getFullEmployeeInfo(UUID employeeId) {
         Optional<Employee> employee = employeeRepository.findByIdFetchContract(employeeId);
         if (employee.isEmpty()) throw new NullPointerException(

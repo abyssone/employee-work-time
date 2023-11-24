@@ -11,7 +11,6 @@ import java.util.Map;
 
 import static java.time.temporal.ChronoUnit.DAYS;
 
-@Component
 public class FixedWorkWeekHandler implements WorkTimeForDateHandler {
     @Override
     public TimePeriod getWorkTimeForDate(WorkTimeModel workTimeModel, LocalDate date) {

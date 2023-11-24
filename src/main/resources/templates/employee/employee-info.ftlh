@@ -1,4 +1,4 @@
-<#import "./lib/components.ftlh" as components>
+<#import "../lib/components.ftlh" as components>
 
 <!DOCTYPE html>
 

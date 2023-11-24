@@ -19,12 +19,12 @@ public class EmployeeController {
     @GetMapping("/")
     public String greetings(Model model) {
         model.addAttribute("employees", employeeService.getAllGeneralEmployeeInfo());
-        return "all-employees-info";
+        return "employee/all-employees-info";
     }
 
     @GetMapping("/employee/create")
     public String getEmployeeCreating() {
-        return "employee-creating";
+        return "employee/employee-creating";
     }
 
     @PostMapping("/employee/create")
@@ -41,9 +41,10 @@ public class EmployeeController {
     public String getEmployee(@PathVariable("id") UUID id, Model model) {
         FullEmployeeInfo fullEmployeeInfo = employeeService.getFullEmployeeInfo(id);
         model.addAttribute("employee", fullEmployeeInfo);
-        return "employee-info";
+        return "employee/employee-info";
     }
 
+    //todo: ex handler
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     @ExceptionHandler(IllegalEmployeeException.class)
     public void exception() {

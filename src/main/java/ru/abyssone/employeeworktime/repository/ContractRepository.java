@@ -22,4 +22,7 @@ public interface ContractRepository extends JpaRepository<Contract, UUID> {
     @Query("SELECT contract FROM Contract contract LEFT JOIN FETCH contract.workTimeReports report " +
             "WHERE contract.id = :contractId")
     Optional<Contract> findByIdFetchReportByDate(@Param("contractId") UUID contractId);
+
+    @Query("SELECT contract FROM Contract contract WHERE contract.id IN :contractIdList")
+    List<Contract> findByIdList(@Param("contractIdList") List<UUID> contracts);
 }

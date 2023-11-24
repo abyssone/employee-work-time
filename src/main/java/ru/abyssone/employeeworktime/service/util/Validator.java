@@ -1,16 +1,21 @@
 package ru.abyssone.employeeworktime.service.util;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import ru.abyssone.employeeworktime.dto.ExceptionalDayInfo;
 import ru.abyssone.employeeworktime.dto.report.WorkTimeReportInfo;
 import ru.abyssone.employeeworktime.entity.AbsenceReason;
 import ru.abyssone.employeeworktime.entity.Employee;
 import ru.abyssone.employeeworktime.service.util.exception.IllegalEmployeeException;
+import ru.abyssone.employeeworktime.service.util.exception.IllegalExceptionalDayInfo;
+import ru.abyssone.employeeworktime.service.util.exception.IllegalTimePeriod;
 import ru.abyssone.employeeworktime.service.util.exception.IllegalWorkTimeReportInfo;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeParseException;
 
+@Slf4j
 @Component
 public class Validator {
 
@@ -57,6 +62,47 @@ public class Validator {
         } catch (IllegalArgumentException exception) {
             throw new IllegalWorkTimeReportInfo(String.format("WorkTimeReportInfo absence reason is incorrect %s",
                     reportInfo.getAbsenceReason()));
+        }
+    }
+
+    public void checkStringTimePeriod(String start, String end) throws IllegalTimePeriod {
+        if (start != null) {
+            if (end == null) throw new IllegalTimePeriod("end time is null when start isn't null");
+            try {
+                LocalTime.parse(start);
+            } catch (DateTimeParseException e) {
+                log.error(e.getMessage());
+                throw new IllegalTimePeriod("error when parsing start time: " + start);
+            }
+        }
+        if (end != null) {
+            if (start == null) throw new IllegalTimePeriod("start time is null when end isn't null");
+            try {
+                LocalTime.parse(end);
+            } catch (DateTimeParseException e) {
+                log.error(e.getMessage());
+                throw new IllegalTimePeriod("error when parsing end time: " + end);
+            }
+        }
+    }
+
+    public void check(ExceptionalDayInfo exceptionalDayInfo) throws IllegalExceptionalDayInfo {
+        if (exceptionalDayInfo == null) throw new IllegalExceptionalDayInfo("is null");
+        try {
+            this.checkStringTimePeriod(exceptionalDayInfo.getStartTime(), exceptionalDayInfo.getEndTime());
+        } catch (IllegalTimePeriod e) {
+            log.error(e.getMessage());
+            throw new IllegalExceptionalDayInfo("incorrect time period");
+        }
+        if (exceptionalDayInfo.getDate() == null) throw new IllegalExceptionalDayInfo("date is null");
+        try {
+            LocalDate.parse(exceptionalDayInfo.getDate());
+        } catch (DateTimeParseException e) {
+            log.error(e.getMessage());
+            throw new IllegalExceptionalDayInfo("incorrect date: " + exceptionalDayInfo.getDate());
+        }
+        if (exceptionalDayInfo.getContracts().isEmpty()) {
+            throw new IllegalExceptionalDayInfo("contracts is null");
         }
     }
 }
