@@ -12,9 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 import ru.abyssone.employeeworktime.dto.ExceptionalDayInfo;
 import ru.abyssone.employeeworktime.service.EmployeeService;
 import ru.abyssone.employeeworktime.service.ExceptionalDayService;
-import ru.abyssone.employeeworktime.service.util.exception.IllegalEntityException;
 import ru.abyssone.employeeworktime.service.util.exception.IllegalExceptionalDayInfo;
-import ru.abyssone.employeeworktime.service.util.exception.IllegalWorkTimeReportInfo;
 
 @Controller
 @RequiredArgsConstructor
