@@ -57,16 +57,4 @@ public class ExceptionalDayService {
 
         exceptionalDayRepository.save(exceptionalDay);
     }
-
-    //todo: delete
-    @PostConstruct
-    private void test() {
-        List<Contract> byIdList = contractRepository.findByIdList(Arrays.asList(
-                UUID.fromString("6ff7681d-f77c-4577-b6e7-9827fd599d68"),
-                UUID.fromString("6ff7681d-f77c-4577-b6e7-9827fd599d61"),
-                UUID.fromString("b60ecc53-0521-4c35-b907-38a08deca381")
-        ));
-
-        System.out.println();
-    }
 }
