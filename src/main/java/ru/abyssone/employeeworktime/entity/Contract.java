@@ -7,6 +7,9 @@ import ru.abyssone.employeeworktime.entity.timemodel.WorkTimeModel;
 import java.time.LocalDate;
 import java.util.*;
 
+/**
+ * Трудовой договор
+ */
 @Entity
 @Table(name = "contracts")
 @Getter
@@ -21,27 +24,48 @@ public class Contract {
     @Id
     private UUID id = UUID.randomUUID();
 
+    /**
+     * Сотрудник, с которым заключен контракт
+     */
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "employee_id")
     @Setter(AccessLevel.NONE) // Замена lombok сеттера для обеспечения связи сущностей
     private Employee employee;
 
+    /**
+     * Отчеты о фактическом времени работы сотрудника за определенную дату
+     */
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "contract_id")
     @MapKey(name = "date")
     private Map<LocalDate, WorkTimeReport> workTimeReports = new HashMap<>();
 
+    /**
+     * Дни, вносящие изменения в общий график работы (например, праздники)
+     */
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "contracts")
     @MapKey(name = "date")
     private Map<LocalDate, ExceptionalDay> exceptionalDays = new HashMap<>();
 
+    /**
+     * Дата заключения трудового договора
+     */
     private LocalDate dateOfConclusion;
 
-    // Optional
+    /**
+     * (Optional) Дата завершения срока действия договора, если договор является временным
+     */
     @Getter(AccessLevel.NONE)
     private LocalDate expirationDate;
+
+    /**
+     * Должность
+     */
     private String position;
 
+    /**
+     * График работы
+     */
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private WorkTimeModel workTimeModel;
 

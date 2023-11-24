@@ -28,7 +28,7 @@
     </#if>
     
     <#if employee.contract.isPresent()>
-        <a class="btn dark-btn" href="/contract/${employee.contract.get().getId()}/report/create">Добавить отчет</a>
+        <a role="button" class="btn dark-btn" href="/contract/${employee.contract.get().getId()}/report/create">Добавить отчет</a>
     </#if>
 
     <div class="row">
@@ -37,6 +37,16 @@
         <p class="align-middle col-auto">–</p>
         <input type="date" id="input-endDate" class="col-2">
         <button id="fetch-btn" class="btn btn-dark col-1">Найти</button>
+    </div>
+    <div class="row">
+        <p class="fw-bolder">ВСЕГО</p>
+        <p>Отсутствовал:<span id="total-missed"></span> Сверхурочно:<span id="total-overtime"></span></p>
+        <p class="fw-bolder">ПО ПРИЧИНЕ</p>
+        <p>
+            Не указано:<span id="missed-no-reason"></span>
+            Больничный:<span id="missed-sick-leave"></span>
+            Командировка:<span id="missed-business-trip"></span>
+        </p>
     </div>
     <div class="row">
         <table class="table">

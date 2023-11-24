@@ -1,17 +1,15 @@
 package ru.abyssone.employeeworktime.service.util;
 
 import org.springframework.stereotype.Component;
-import ru.abyssone.employeeworktime.dto.WorkTimeReportInfo;
+import ru.abyssone.employeeworktime.dto.report.WorkTimeReportInfo;
 import ru.abyssone.employeeworktime.entity.AbsenceReason;
 import ru.abyssone.employeeworktime.entity.Employee;
-import ru.abyssone.employeeworktime.entity.embedded.TimePeriod;
 import ru.abyssone.employeeworktime.service.util.exception.IllegalEmployeeException;
 import ru.abyssone.employeeworktime.service.util.exception.IllegalWorkTimeReportInfo;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeParseException;
-import java.util.Arrays;
 
 @Component
 public class Validator {

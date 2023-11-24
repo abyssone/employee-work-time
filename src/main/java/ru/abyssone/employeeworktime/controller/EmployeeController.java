@@ -5,8 +5,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import ru.abyssone.employeeworktime.dto.FullEmployeeInfo;
-import ru.abyssone.employeeworktime.dto.GeneralEmployeeInfo;
+import ru.abyssone.employeeworktime.dto.employee.FullEmployeeInfo;
+import ru.abyssone.employeeworktime.dto.employee.GeneralEmployeeInfo;
 import ru.abyssone.employeeworktime.service.EmployeeService;
 import ru.abyssone.employeeworktime.service.util.exception.IllegalEmployeeException;
 

@@ -1,7 +1,8 @@
-package ru.abyssone.employeeworktime.dto;
+package ru.abyssone.employeeworktime.dto.contract;
 
 import lombok.Getter;
 import lombok.Setter;
+import ru.abyssone.employeeworktime.dto.contract.ContractState;
 
 import java.time.LocalDate;
 import java.util.Optional;

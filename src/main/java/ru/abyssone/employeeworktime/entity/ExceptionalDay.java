@@ -27,12 +27,25 @@ public class ExceptionalDay {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    /**
+     * Дата
+     */
     private LocalDate date;
 
+    /**
+     * Рабочее время
+     */
     @Embedded
     private TimePeriod workTime;
+
+    /**
+     * Доп. информация
+     */
     private String info;
 
+    /**
+     * Коллекция контрактов, на которую распространяется данный exeptionalDay
+     */
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "contracts_to_exceptional_days",
             joinColumns = @JoinColumn(name = "exceptional_day_id"),

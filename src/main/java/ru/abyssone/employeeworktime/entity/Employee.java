@@ -9,6 +9,9 @@ import lombok.Setter;
 import java.time.LocalDate;
 import java.util.*;
 
+/**
+ * Сотрудник, предоставляет общую информацию
+ */
 @Entity
 @Table(name = "employees")
 @Getter
@@ -16,6 +19,9 @@ import java.util.*;
 @NoArgsConstructor
 public class Employee {
 
+    /**
+     * Пол
+     */
     public enum Sex {
         MALE, FEMALE
     }
@@ -27,17 +33,33 @@ public class Employee {
     @Id
     private UUID id = UUID.randomUUID();
 
+    /**
+     * Имя
+     */
     private String name;
+
+    /**
+     * Адрес
+     */
     private String address;
+
+    /**
+     * Дата рождения
+     */
     private LocalDate BirthDate;
+
+    /**
+     * Пол
+     */
     private Sex sex;
 
-    // Optional
+    /**
+     * (Optional) Трудовой договор сотрудника
+     */
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "employee")
     @Getter(AccessLevel.NONE)
     private Contract contract;
     //private Optional<Account> account;
-
     public Optional<Contract> getContract() {
         if (this.contract == null) return Optional.empty();
         return Optional.of(this.contract);

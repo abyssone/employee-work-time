@@ -1,4 +1,4 @@
-package ru.abyssone.employeeworktime.dto;
+package ru.abyssone.employeeworktime.dto.report;
 
 import lombok.Getter;
 import lombok.Setter;

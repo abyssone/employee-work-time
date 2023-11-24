@@ -2,9 +2,9 @@ package ru.abyssone.employeeworktime.mapper;
 
 import org.mapstruct.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import ru.abyssone.employeeworktime.dto.ContractState;
-import ru.abyssone.employeeworktime.dto.FullContractInfo;
-import ru.abyssone.employeeworktime.dto.GeneralContractInfo;
+import ru.abyssone.employeeworktime.dto.contract.ContractState;
+import ru.abyssone.employeeworktime.dto.contract.FullContractInfo;
+import ru.abyssone.employeeworktime.dto.contract.GeneralContractInfo;
 import ru.abyssone.employeeworktime.entity.Contract;
 import ru.abyssone.employeeworktime.repository.EmployeeRepository;
 import ru.abyssone.employeeworktime.repository.WorkTimeModelRepository;

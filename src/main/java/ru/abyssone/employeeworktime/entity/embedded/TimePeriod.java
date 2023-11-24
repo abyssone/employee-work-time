@@ -15,7 +15,15 @@ import java.util.Objects;
 @Getter
 @Setter
 public class TimePeriod {
+
+    /**
+     * Начало временного периода
+     */
     private LocalTime startTime;
+
+    /**
+     * Конец временного периода
+     */
     private LocalTime endTime;
 
     @Override

@@ -1,7 +1,9 @@
-package ru.abyssone.employeeworktime.dto;
+package ru.abyssone.employeeworktime.dto.employee;
 
 import lombok.Getter;
 import lombok.Setter;
+import ru.abyssone.employeeworktime.dto.schedule.ScheduleDescription;
+import ru.abyssone.employeeworktime.dto.contract.GeneralContractInfo;
 
 import java.util.Optional;
 import java.util.UUID;

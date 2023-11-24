@@ -4,6 +4,12 @@ let startDateInput = document.getElementById("input-startDate");
 let endDateInput = document.getElementById("input-endDate");
 let tbody = document.getElementById("statistic-tbody");
 
+let totalMissed = document.getElementById("total-missed");
+let totalOvertime = document.getElementById("total-overtime");
+let missedNoReason = document.getElementById("missed-no-reason");
+let missedSickLeave = document.getElementById("missed-sick-leave");
+let missedBusinessTrip = document.getElementById("missed-business-trip");
+
 console.log(contractId);
 
 btn.addEventListener("click", () => fetchFunc());
@@ -24,7 +30,13 @@ function updateTable(data) {
         first = tbody.firstElementChild;
     }
 
-    data.forEach(report => {
+    totalMissed.textContent = data.totalMissed;
+    totalOvertime.textContent = data.totalOvertime;
+    missedNoReason.textContent = data.missedForReason.NO_REASON;
+    missedSickLeave.textContent = data.missedForReason.SICK_LEAVE;
+    missedBusinessTrip.textContent = data.missedForReason.BUSINESS_TRIP;
+
+    data.reports.forEach(report => {
        let row = oneLineTag("tr");
 
        let date = oneLineTag("td", { textContent : toDDMMYYYYFormat(report.date)});

@@ -2,9 +2,9 @@ package ru.abyssone.employeeworktime.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import ru.abyssone.employeeworktime.dto.ScheduleDescription;
-import ru.abyssone.employeeworktime.dto.ScheduleInfo;
-import ru.abyssone.employeeworktime.dto.ScheduleType;
+import ru.abyssone.employeeworktime.dto.schedule.ScheduleDescription;
+import ru.abyssone.employeeworktime.dto.schedule.ScheduleInfo;
+import ru.abyssone.employeeworktime.dto.schedule.ScheduleType;
 import ru.abyssone.employeeworktime.entity.timemodel.FixedWorkWeek;
 import ru.abyssone.employeeworktime.entity.timemodel.ShiftWorkSchedule;
 import ru.abyssone.employeeworktime.entity.timemodel.WorkTimeModel;

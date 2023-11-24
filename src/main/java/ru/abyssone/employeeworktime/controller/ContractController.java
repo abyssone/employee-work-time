@@ -1,15 +1,15 @@
 package ru.abyssone.employeeworktime.controller;
 
-import jakarta.websocket.server.PathParam;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import ru.abyssone.employeeworktime.dto.FullContractInfo;
-import ru.abyssone.employeeworktime.dto.ScheduleType;
-import ru.abyssone.employeeworktime.dto.WorkTimeReportInfo;
+import org.springframework.web.servlet.ModelAndView;
+import ru.abyssone.employeeworktime.dto.contract.FullContractInfo;
+import ru.abyssone.employeeworktime.dto.report.WorkTimeReportInfo;
 import ru.abyssone.employeeworktime.service.ContractService;
 import ru.abyssone.employeeworktime.service.EmployeeService;
 import ru.abyssone.employeeworktime.service.ReportService;
@@ -56,16 +56,20 @@ public class ContractController {
     }
 
     @ExceptionHandler(value = {NullPointerException.class})
-    public ResponseEntity handleException(NullPointerException exception) {
-        return ResponseEntity
-                .status(HttpStatus.NOT_FOUND)
-                .body(exception.getMessage());
+    public ModelAndView handleException(HttpServletRequest req, NullPointerException exception) {
+        ModelAndView mav = new ModelAndView("exception");
+        mav.addObject("exception", exception.getClass());
+        mav.addObject("url", req.getRequestURL());
+        mav.addObject("message", exception.getMessage());
+        return mav;
     }
 
     @ExceptionHandler(value = {IllegalWorkTimeReportInfo.class})
-    public ResponseEntity handleException(IllegalWorkTimeReportInfo exception) {
-        return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST)
-                .body(exception.getMessage());
+    public ModelAndView handleException(HttpServletRequest req, IllegalWorkTimeReportInfo exception) {
+        ModelAndView mav = new ModelAndView("exception");
+        mav.addObject("exception", exception.getClass());
+        mav.addObject("url", req.getRequestURL());
+        mav.addObject("message", exception.getMessage());
+        return mav;
     }
 }

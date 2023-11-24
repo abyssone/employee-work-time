@@ -1,11 +1,11 @@
 package ru.abyssone.employeeworktime.service;
 
-import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import ru.abyssone.employeeworktime.dto.DailyWorkReport;
-import ru.abyssone.employeeworktime.dto.WorkTimeReportInfo;
+import ru.abyssone.employeeworktime.dto.report.DailyWorkReport;
+import ru.abyssone.employeeworktime.dto.report.FullWorkReportsStatistic;
+import ru.abyssone.employeeworktime.dto.report.WorkTimeReportInfo;
 import ru.abyssone.employeeworktime.entity.Contract;
 import ru.abyssone.employeeworktime.entity.ExceptionalDay;
 import ru.abyssone.employeeworktime.entity.WorkTimeReport;
@@ -73,7 +73,9 @@ public class ReportService {
      * Возвращает полную статистику по рабочему времени по графику и фактически отработанному времени
      * за указанный промежуток дат
      */
-    public List<DailyWorkReport> getDailyWorkReports(UUID contractId, String startDateString, String endDateString) {
+    public FullWorkReportsStatistic getFullWorkReportsStatistic(UUID contractId,
+                                                                String startDateString,
+                                                                String endDateString) {
 
         if (startDateString.isEmpty() || endDateString.isEmpty()) return null;
 
@@ -107,10 +109,8 @@ public class ReportService {
             scheduledWorkTime.put(exDay.getDate(), exDay.getWorkTime());
         }
 
-        // Сортировка по дате по возрастанию
-        return reportMapper.toDailyWorkReports(scheduledWorkTime, reports).stream().sorted(
-                (a, b) -> {
-                    return a.getDate().isBefore(b.getDate()) ? -1 : b.getDate().isBefore(a.getDate()) ? 1 : 0;
-                }).collect(Collectors.toList());
+        FullWorkReportsStatistic statistic = reportMapper.toFullWorkReportsStatistic(scheduledWorkTime, reports);
+
+        return statistic;
     }
 }
