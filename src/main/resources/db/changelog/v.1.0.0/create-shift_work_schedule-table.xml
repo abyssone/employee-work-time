@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
+
+    <changeSet id="create-shift_work_schedule-table" author="abyssone">
+
+        <createTable tableName="shift_work_schedule">
+
+            <column name="id" type="uuid">
+                <constraints primaryKey="true" nullable="false" />
+            </column>
+
+            <column name="work_days_number" type="int">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="days_off_number" type="int">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="start_work_schedule" type="date">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="start_time" type="time">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="end_time" type="time">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="title" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>

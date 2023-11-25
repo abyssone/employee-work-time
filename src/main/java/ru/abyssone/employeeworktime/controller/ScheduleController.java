@@ -16,12 +16,12 @@ public class ScheduleController {
 
     @GetMapping("schedule/create")
     public String getScheduleCreating() {
-        return "schedule/schedule-creating";
+        return "schedule-creating";
     }
 
     @PostMapping("schedule/create")
     public String createSchedule(@ModelAttribute ScheduleInfo scheduleInfo) {
         scheduleService.save(scheduleInfo);
-        return "schedule/schedule-creating";
+        return "redirect:/schedule/create";
     }
 }

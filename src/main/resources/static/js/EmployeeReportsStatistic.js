@@ -10,8 +10,6 @@ let missedNoReason = document.getElementById("missed-no-reason");
 let missedSickLeave = document.getElementById("missed-sick-leave");
 let missedBusinessTrip = document.getElementById("missed-business-trip");
 
-console.log(contractId);
-
 btn.addEventListener("click", () => fetchFunc());
 
 function fetchFunc() {

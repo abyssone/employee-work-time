@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
+
+    <changeSet id="create-contracts_to_exceptional_days-table" author="abyssone">
+
+        <createTable tableName="contracts_to_exceptional_days">
+
+            <column name="exceptional_day_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="contract_id" type="uuid">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="create-pk_contracts_to_exceptional_days" author="abyssone">
+        <addPrimaryKey
+                tableName="contracts_to_exceptional_days"
+                columnNames="exceptional_day_id, contract_id"
+                constraintName="pk_contracts_to_exceptional_days"
+        />
+    </changeSet>
+
+    <changeSet id="create-exceptional_day_id-fk" author="abyssone">
+        <addForeignKeyConstraint baseTableName="contracts_to_exceptional_days" baseColumnNames="exceptional_day_id"
+                                 constraintName="fk_exceptional_day_id"
+                                 referencedTableName="exceptional_days" referencedColumnNames="id"
+                                 onUpdate="CASCADE" deleteCascade="true"/>
+    </changeSet>
+
+    <changeSet id="create-contract_id-fk" author="abyssone">
+        <addForeignKeyConstraint baseTableName="contracts_to_exceptional_days" baseColumnNames="contract_id"
+                                 constraintName="fk_contract_id"
+                                 referencedTableName="contracts" referencedColumnNames="id"
+                                 onUpdate="CASCADE" deleteCascade="true"/>
+    </changeSet>
+
+</databaseChangeLog>

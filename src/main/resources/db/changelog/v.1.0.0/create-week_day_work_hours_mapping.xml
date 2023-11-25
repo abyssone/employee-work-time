@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
+
+    <changeSet id="create-week_day_work_hours_mapping" author="abyssone">
+
+        <createTable tableName="week_day_work_hours_mapping">
+
+            <column name="day_of_week" type="smallint">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="fixed_work_week_id" type="uuid">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="start_time" type="time">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="end_time" type="time">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="create-pk_week_day_work_hours_mapping" author="abyssone">
+        <addPrimaryKey
+                tableName="week_day_work_hours_mapping"
+                columnNames="day_of_week, fixed_work_week_id"
+                constraintName="pk_day_of_week_fixed_work_week"
+        />
+    </changeSet>
+
+    <changeSet id="create-fk_fixed_work_week_id" author="abyssone">
+        <addForeignKeyConstraint baseTableName="week_day_work_hours_mapping" baseColumnNames="fixed_work_week_id"
+                                 constraintName="fk_fixed_work_week_id"
+                                 referencedTableName="fixed_work_week" referencedColumnNames="id"
+                                 onUpdate="CASCADE" deleteCascade="true"/>
+    </changeSet>
+
+</databaseChangeLog>

@@ -1,5 +1,6 @@
 package ru.abyssone.employeeworktime.repository;
 
+import org.junit.jupiter.api.Order;
 import ru.abyssone.employeeworktime.entity.Contract;
 import ru.abyssone.employeeworktime.entity.Employee;
 import ru.abyssone.employeeworktime.entity.ExceptionalDay;
@@ -14,6 +15,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import ru.abyssone.employeeworktime.entity.timemodel.WorkTimeModel;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -21,6 +23,7 @@ import java.time.LocalTime;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -45,6 +48,7 @@ class ContractRepositoryIntegrationTest {
     private ExceptionalDayRepository exceptionalDayRepository;
 
     @Test
+    @Order(1)
     public void createEmployee() {
         Employee e1 = new Employee();
         e1.setName("name");
@@ -63,6 +67,8 @@ class ContractRepositoryIntegrationTest {
     }
 
     @Test
+    @Order(2)
+    @DisplayName("Добавление графика фиксированной недели")
     public void createFixedWorkWeek() {
         FixedWorkWeek fixedWorkWeek = new FixedWorkWeek();
 
@@ -81,16 +87,29 @@ class ContractRepositoryIntegrationTest {
 
         fixedWorkWeek.setWorkHours(workHours);
 
+        String title = "testSchedule";
+        fixedWorkWeek.setTitle(title);
+
         Contract contract = new Contract();
+        UUID contractId = contract.getId();
+
         contract.setWorkTimeModel(fixedWorkWeek);
 
         contractRepository.save(contract);
+
+        WorkTimeModel workTimeModelFromDB = contractRepository.findByIdWorkTimeModel(contractId);
+
+        assertNotNull(workTimeModelFromDB);
+        assertEquals(FixedWorkWeek.class, workTimeModelFromDB.getClass());
+        assertEquals(title, workTimeModelFromDB.getTitle());
     }
 
     @Test
-    @DisplayName("добавление рабочего дня")
-    public void createExctptionalDay() {
+    @Order(3)
+    @DisplayName("Добавление рабочего дня вне графика")
+    public void createExceptionalDay() {
         Contract contract = new Contract();
+        UUID contractId = contract.getId();
 
         TimePeriod timePeriod = new TimePeriod();
         timePeriod.setStartTime(LocalTime.parse("08:00:00"));
@@ -106,19 +125,17 @@ class ContractRepositoryIntegrationTest {
 
         List<Contract> contractList = contractRepository.findAllFetchExceptionalDays();
 
-        /*
-            В exceptional day был добавлен только один contract
-         */
-        assertEquals(1, contractList.size());
+        assertEquals(2, contractList.size());
+        List<Contract> contracts = contractList.stream().filter(c -> c.getId().equals(contractId)).toList();
 
-        Contract contractFromDb = contractList.get(0);
+        assertEquals(1, contracts.size());
 
         /*
             в мапе contract.exDays по ключу exDay.date должет быть exDay
          */
-        assertNotNull(contractFromDb.getExceptionalDays().get(exceptionalDay.getDate()));
+        assertNotNull(contracts.get(0).getExceptionalDays().get(exceptionalDay.getDate()));
 
-        ExceptionalDay exDayFromDb = contractFromDb.getExceptionalDays().get(exceptionalDay.getDate());
+        ExceptionalDay exDayFromDb = contracts.get(0).getExceptionalDays().get(exceptionalDay.getDate());
         assertEquals(exceptionalDay.getInfo(), exDayFromDb.getInfo());
         Assertions.assertEquals(exceptionalDay.getWorkTime(), exDayFromDb.getWorkTime());
     }
