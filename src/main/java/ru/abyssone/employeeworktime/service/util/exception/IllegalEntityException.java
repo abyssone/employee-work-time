@@ -2,10 +2,6 @@ package ru.abyssone.employeeworktime.service.util.exception;
 
 public class IllegalEntityException extends IllegalArgumentException{
 
-    public IllegalEntityException() {
-        super();
-    }
-
     public IllegalEntityException(String s) {
         super(s);
     }

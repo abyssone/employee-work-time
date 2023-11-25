@@ -1,12 +1,10 @@
 package ru.abyssone.employeeworktime.service.util.exception;
 
-public class IllegalWorkTimeReportInfo extends IllegalArgumentException{
+import ru.abyssone.employeeworktime.dto.report.WorkTimeReportInfo;
 
-    public IllegalWorkTimeReportInfo() {
-        super();
-    }
+public class IllegalWorkTimeReportInfo extends IllegalEntityException{
 
-    public IllegalWorkTimeReportInfo(String s) {
-        super(s);
+    public IllegalWorkTimeReportInfo(String msg) {
+        super(WorkTimeReportInfo.class.toString(), msg);
     }
 }

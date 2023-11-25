@@ -3,6 +3,7 @@ package ru.abyssone.employeeworktime.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.abyssone.employeeworktime.dto.report.DailyWorkReport;
 import ru.abyssone.employeeworktime.dto.report.FullWorkReportsStatistic;
 import ru.abyssone.employeeworktime.dto.report.WorkTimeReportInfo;
@@ -39,6 +40,8 @@ public class ReportService {
     private final ReportMapper reportMapper;
     private final Validator validator;
 
+    // Т.к. save выполняется с помощью native sql, то метод должен быть transactional
+    @Transactional
     public void save(UUID contractId, WorkTimeReportInfo reportInfo) throws IllegalWorkTimeReportInfo,
                                                                             NullPointerException {
         try {
@@ -65,8 +68,7 @@ public class ReportService {
             throw new IllegalWorkTimeReportInfo(msg);
         }
 
-        contract.get().addWorkTimeReport(workTimeReport);
-        contractRepository.save(contract.get());
+        workTimeReportRepository.save(contractId, workTimeReport);
     }
 
     /*

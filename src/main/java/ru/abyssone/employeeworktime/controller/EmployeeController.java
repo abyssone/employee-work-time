@@ -44,6 +44,19 @@ public class EmployeeController {
         return "employee/employee-info";
     }
 
+    @GetMapping("employee/{id}/edit")
+    public String getEmployeeEditing(@PathVariable("id") UUID id, Model model) {
+        model.addAttribute("employee", employeeService.getGeneralEmployeeInfoById(id));
+        return "employee/employee-editing";
+    }
+
+    @PostMapping("employee/{id}/edit")
+    public String getEmployeeEditing(@PathVariable("id") UUID id,
+                                     @ModelAttribute GeneralEmployeeInfo employeeInfo) {
+        employeeService.update(employeeInfo);
+        return "redirect:/employee/{id}";
+    }
+
     //todo: ex handler
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     @ExceptionHandler(IllegalEmployeeException.class)

@@ -27,9 +27,13 @@
         <p>Нет контракта</p>
     </#if>
     
-    <#if employee.contract.isPresent()>
-        <a role="button" class="btn dark-btn" href="/contract/${employee.contract.get().getId()}/report/create">Добавить отчет</a>
-    </#if>
+    <div class="row">
+        <a href="/employee/${employee.id}/edit" class="col-1 btn btn-dark">Изменить</a>
+
+        <#if employee.contract.isPresent()>
+            <a role="button" class="col-2 ms-1 btn btn-dark" href="/contract/${employee.contract.get().getId()}/report/create">Добавить отчет</a>
+        </#if>
+    </div>
 
     <div class="row">
         <p class="align-middle col-auto">Статистика за:</p>

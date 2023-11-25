@@ -1,5 +1,6 @@
 package ru.abyssone.employeeworktime.repository;
 
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import ru.abyssone.employeeworktime.entity.WorkTimeReport;
@@ -16,4 +17,12 @@ public interface WorkTimeReportRepository extends JpaRepository<WorkTimeReport, 
     List<WorkTimeReport> findReportsByIdAndDatePeriod(@Param("contractId") UUID contractId,
                                                       @Param("startDate") LocalDate startDate,
                                                       @Param("endDate") LocalDate endDate);
+
+    // Очищение контекста персистентности перед выполнением native sql
+    @Modifying(clearAutomatically = true, flushAutomatically = true)
+    @Query(value = "INSERT INTO work_time_reports (date, start_time, end_time, absence_reason, contract_id) " +
+            "VALUES (:#{#report.date}, :#{#report.workedTime.startTime}, :#{#report.workedTime.endTime}, " +
+            ":#{#report.absenceReason.ordinal()}, :contractId)",
+            nativeQuery = true)
+    void save(@Param("contractId") UUID contractId, @Param("report") WorkTimeReport report);
 }

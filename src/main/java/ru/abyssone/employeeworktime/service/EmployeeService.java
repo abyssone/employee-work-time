@@ -41,10 +41,17 @@ public class EmployeeService {
         return employeeMapper.toFullEmployeeInfo(employee.get());
     }
 
-    public Optional<GeneralEmployeeInfo> getGeneralEmployeeInfoById(UUID id) {
+    public GeneralEmployeeInfo getGeneralEmployeeInfoById(UUID id) throws NullPointerException{
         Optional<Employee> employee = employeeRepository.findById(id);
+
+        if (employee.isEmpty()) {
+            String msg = String.format("Employee with id: %s not found", id);
+            log.error(msg);
+            throw new NullPointerException(msg);
+        }
+
         GeneralEmployeeInfo employeeInfo = employeeMapper.toGeneralEmployeeInfo(employee.get());
-        return Optional.of(employeeInfo);
+        return employeeInfo;
     }
 
     public void save(GeneralEmployeeInfo employeeInfo) throws IllegalEmployeeException{
@@ -59,4 +66,17 @@ public class EmployeeService {
             throw new IllegalEmployeeException(ex.getMessage());
         }
     };
+
+    public void update(GeneralEmployeeInfo employeeInfo) {
+        Employee employee = employeeMapper.toEmployee(employeeInfo);
+
+        try {
+            validator.check(employee);
+        } catch (IllegalEmployeeException ex) {
+            log.error(ex.getMessage());
+            throw ex;
+        }
+
+        employeeRepository.save(employee);
+    }
 }
