@@ -6,42 +6,37 @@
 <@components.head title="Изменение рабочего дня" />
 
 <body>
+<@components.header />
 <div class="container">
-    <h3>Изменение рабочего дня</h3>
-    <form action="/exceptionalday/create" method="post">
 
-        <div class="row justify-content-between">
-            <div class="form-floating col-3">
-                <input type="date" name="date" class="form-control" id="date-input"><br/>
-                <label for="date-input" class="form-label">Дата</label>
-            </div>
+    <@components.title text="Изменение рабочего дня" />
 
-            <div class="col">
-                <div class="row justify-content-end">
-                    <div class="form-floating col-3">
-                        <input type="time" name="startTime" class="form-control" id="startTime-input"><br/>
-                        <label for="startTime-input" class="form-label">Начало рабочего дня</label>
-                    </div>
-
-                    <div class="form-floating col-3">
-                        <input type="time" name="endTime" class="form-control" id="endTime-input"><br/>
-                        <label for="endTime-input" class="form-label">Конец рабочего дня</label>
-                    </div>
+    <form action="/exceptionalday/create" method="post" class="row d-flex justify-content-center">
+        <div class="row mb-5" style="max-width: 800px;">
+            <div class="row">
+                <div class="form-floating col-md-4">
+                    <input type="date" name="date" class="form-control" id="date-input"><br/>
+                    <label for="date-input" class="form-label">Дата</label>
                 </div>
 
-            </div>
+                <div class="form-floating col-md-4">
+                    <input type="time" name="startTime" class="form-control" id="startTime-input"><br/>
+                    <label for="startTime-input" class="form-label">Начало рабочего дня</label>
+                </div>
 
+                <div class="form-floating col-md-4">
+                    <input type="time" name="endTime" class="form-control" id="endTime-input"><br/>
+                    <label for="endTime-input" class="form-label">Конец рабочего дня</label>
+                </div>
+
+                <div class="form-floating">
+                    <input type="text" name="info" class="form-control" id="info-input"><br/>
+                    <label for="info-input" class="form-label">Дополнительная информация</label>
+                </div>
         </div>
 
-
-        <div class="form-floating">
-            <input type="text" name="info" class="form-control" id="info-input"><br/>
-            <label for="info-input" class="form-label">Дополнительная информация</label>
+            <input type="submit" class="btn btn-dark col-md-auto" value="Добавить">
         </div>
-        <div class="row justify-content-end">
-            <input type="submit" class="btn btn-dark col-1" value="Добавить">
-        </div>
-
         <p class="fw-bolder">Сотрудники</p>
 
         <table class="table">

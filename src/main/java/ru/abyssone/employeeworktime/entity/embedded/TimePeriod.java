@@ -38,13 +38,4 @@ public class TimePeriod {
     public int hashCode() {
         return Objects.hash(startTime, endTime);
     }
-
-    @PrePersist
-    private void correcting() {
-        if (this.getStartTime().isAfter(this.getEndTime())) {
-            LocalTime temp = this.startTime;
-            this.startTime = endTime;
-            this.endTime = temp;
-        }
-    }
 }

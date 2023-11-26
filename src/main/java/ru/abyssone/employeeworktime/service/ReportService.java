@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.abyssone.employeeworktime.dto.report.DailyWorkReport;
 import ru.abyssone.employeeworktime.dto.report.FullWorkReportsStatistic;
 import ru.abyssone.employeeworktime.dto.report.WorkTimeReportInfo;
 import ru.abyssone.employeeworktime.entity.Contract;
@@ -53,7 +52,7 @@ public class ReportService {
 
         WorkTimeReport workTimeReport = reportMapper.toWorkTimeReport(reportInfo);
 
-        Optional<Contract> contract = contractRepository.findByIdFetchReportByDate(contractId);
+        Optional<Contract> contract = contractRepository.findByIdFetchReports(contractId);
         if (contract.isEmpty()) {
             String msg = String.format("Contract with id: %s not found", contractId);
             log.error(msg);

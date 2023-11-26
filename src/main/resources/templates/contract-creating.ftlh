@@ -5,9 +5,10 @@
 <@components.head title="Добавление контракта"/>
 
 <body>
+<@components.header />
 <div class="container">
     <div class="d-grid gap-2">
-        <h3>Добавление контракта</h3>
+        <@components.title text="Добавление контракта" />
         <form method="post" action="/contract/create" class="d-grid gap-2">
             <div class="form-floating">
                 <select name="employeeId" class="form-select" id="employee-select">

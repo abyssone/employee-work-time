@@ -38,7 +38,7 @@ public class ContractController {
     @PostMapping("/contract/create")
     public String createContract(@ModelAttribute FullContractInfo contractInfo) {
         contractService.save(contractInfo);
-        return "contract-creating";
+        return "redirect:/contract/create";
     }
 
     @GetMapping("/contract/{id}/report/create")

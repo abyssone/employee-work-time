@@ -6,8 +6,10 @@
 <@components.head title="Добавление сотрудника"/>
 
 <body>
+<@components.header />
 <div class="container">
-    <h3>Добавление сотрудника</h3>
+    <@components.title text="Добавление сотрудника" />
+
     <form action="/employee/create" method="post">
 
         <div class="form-floating">

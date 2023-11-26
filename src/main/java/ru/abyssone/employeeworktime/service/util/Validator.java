@@ -84,6 +84,13 @@ public class Validator {
                 throw new IllegalTimePeriod("error when parsing end time: " + end);
             }
         }
+        if (end != null && start != null) {
+            if (LocalTime.parse(end).isAfter(LocalTime.parse(start))) {
+                String msg = String.format("end time (%s) cannot be earlier than start time (%s)", end, start);
+                log.error(msg);
+                throw new IllegalTimePeriod(msg);
+            }
+        }
     }
 
     public void check(ExceptionalDayInfo exceptionalDayInfo) throws IllegalExceptionalDayInfo {

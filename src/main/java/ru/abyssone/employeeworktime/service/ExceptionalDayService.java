@@ -31,6 +31,10 @@ public class ExceptionalDayService {
     private final ExceptionalDayRepository exceptionalDayRepository;
 
     public void save(ExceptionalDayInfo exceptionalDayInfo) throws IllegalExceptionalDayInfo {
+        // Т.к. с фронта приходит пустая строка, null необходимо присваивать вручную
+        if (exceptionalDayInfo.getStartTime().isEmpty()) exceptionalDayInfo.setStartTime(null);
+        if (exceptionalDayInfo.getEndTime().isEmpty()) exceptionalDayInfo.setEndTime(null);
+
         try {
             validator.check(exceptionalDayInfo);
         } catch (IllegalEntityException e) {

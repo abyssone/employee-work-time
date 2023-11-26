@@ -5,8 +5,10 @@
 <@components.head title="Error"/>
 
 <body>
+<@components.header />
 <div class="container">
-    <h3>Что-то пошло не так...</h3>
+    <@components.title text="Что-то пошло не по плану..." />
+
     <p> <span class="fw-bolder">URL: </span>${url}</p>
     <p> <span class="fw-bolder">EXCEPTION: </span>${exception}</p>
     <p> <span class="fw-bolder">MESSAGE: </span>${message}</p>

@@ -11,9 +11,10 @@
         ""
     </#if>
 >
-
+<@components.header />
 <div class="container">
-    <h3>Информация о сотруднике</h3>
+    <@components.title text="Информация о сотруднике" />
+
     <p>Имя: ${employee.name}</p>
     <#if employee.contract.isPresent()>
         <p>Должность: ${employee.contract.get().position}</p>
@@ -22,25 +23,56 @@
             state=employee.contract.get().state
             expirationDate=employee.contract.get().expirationDate/></p>
         <p>График работы: ${employee.schedule.get().title}</p>
-        <p>Тип графика: ${employee.schedule.get().type}</p>
+        <p>Тип графика: <@components.scheduleName type=employee.schedule.get().type /></p>
     <#else >
         <p>Нет контракта</p>
     </#if>
     
     <div class="row">
-        <a href="/employee/${employee.id}/edit" class="col-1 btn btn-dark">Изменить</a>
+        <div class="col-2">
+            <a href="/employee/${employee.id}/edit" class="btn  btn-dark col-12">Изменить</a>
+        </div>
 
         <#if employee.contract.isPresent()>
-            <a role="button" class="col-2 ms-1 btn btn-dark" href="/contract/${employee.contract.get().getId()}/report/create">Добавить отчет</a>
+            <div class="col-2">
+                <a role="button" class="btn btn-dark col-12" href="/contract/${employee.contract.get().getId()}/report/create">
+                    Добавить отчет
+                </a>
+            </div>
         </#if>
+        <hr class="mt-2">
     </div>
 
     <div class="row">
-        <p class="align-middle col-auto">Статистика за:</p>
-        <input type="date" id="input-startDate" class="col-2">
-        <p class="align-middle col-auto">–</p>
-        <input type="date" id="input-endDate" class="col-2">
-        <button id="fetch-btn" class="btn btn-dark col-1">Найти</button>
+
+        <div class="col-12">
+            <h3 class="text-center mb-5">Статистика</h3>
+        </div>
+
+        <div class="row mb-3">
+
+            <div class="col-2">
+                <div class="form-floating">
+                    <input type="date" id="input-startDate" class="form-control">
+                    <label for="input-startDate" class="form-label">С</label>
+                </div>
+            </div>
+
+            <div class="col-2">
+                <div class="form-floating">
+                    <input type="date" id="input-endDate" class="form-control">
+                    <label for="input-endDate" class="form-label">До</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-2"></div>
+            <div class="col-2">
+                <button id="fetch-btn" class="btn btn-dark col-12">Найти</button>
+            </div>
+        </div>
+
     </div>
     <div class="row">
         <p class="fw-bolder">ВСЕГО</p>

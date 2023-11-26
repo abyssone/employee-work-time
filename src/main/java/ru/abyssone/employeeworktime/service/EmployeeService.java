@@ -24,6 +24,10 @@ public class EmployeeService {
     private final EmployeeMapper employeeMapper;
     private final Validator validator;
 
+    public enum SortField {
+        NAME, POSITION, CONTRACT_CONCLUSION, CONTRACT_EXPIRATION
+    }
+
     public List<GeneralEmployeeInfo> getAllGeneralEmployeeInfo() {
         List<Employee> all = employeeRepository.findAll();
         return all.stream().map(employeeMapper::toGeneralEmployeeInfo).toList();
@@ -78,5 +82,14 @@ public class EmployeeService {
         }
 
         employeeRepository.save(employee);
+    }
+
+    public List<GeneralEmployeeInfo> getFilteredAndSortedEmployeesInfo(String searchString,
+                                                                       String sortString) {
+
+
+
+        List<Employee> all = employeeRepository.findAllFilteredAndSorted(searchString, SortField.valueOf(sortString));
+        return all.stream().map(employeeMapper::toGeneralEmployeeInfo).toList();
     }
 }
