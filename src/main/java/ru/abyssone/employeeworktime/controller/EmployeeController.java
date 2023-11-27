@@ -1,14 +1,17 @@
 package ru.abyssone.employeeworktime.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 import ru.abyssone.employeeworktime.dto.employee.FullEmployeeInfo;
 import ru.abyssone.employeeworktime.dto.employee.GeneralEmployeeInfo;
 import ru.abyssone.employeeworktime.service.EmployeeService;
 import ru.abyssone.employeeworktime.service.util.exception.IllegalEmployeeException;
+import ru.abyssone.employeeworktime.service.util.exception.IllegalExceptionalDayInfo;
 
 import java.util.UUID;
 
@@ -57,9 +60,21 @@ public class EmployeeController {
         return "redirect:/employee/{id}";
     }
 
-    //todo: ex handler
-    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(IllegalEmployeeException.class)
-    public void exception() {
+    @ExceptionHandler(value = {NullPointerException.class})
+    public ModelAndView handleException(HttpServletRequest req, NullPointerException exception) {
+        ModelAndView mav = new ModelAndView("exception");
+        mav.addObject("exception", exception.getClass());
+        mav.addObject("url", req.getRequestURL());
+        mav.addObject("message", exception.getMessage());
+        return mav;
+    }
+
+    @ExceptionHandler(value = {IllegalEmployeeException.class})
+    public ModelAndView handleException(HttpServletRequest req, IllegalEmployeeException exception) {
+        ModelAndView mav = new ModelAndView("exception");
+        mav.addObject("exception", exception.getClass());
+        mav.addObject("url", req.getRequestURL());
+        mav.addObject("message", exception.getMessage());
+        return mav;
     }
 }

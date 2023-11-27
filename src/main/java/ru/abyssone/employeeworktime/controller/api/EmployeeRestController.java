@@ -1,9 +1,10 @@
 package ru.abyssone.employeeworktime.controller.api;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
+import ru.abyssone.employeeworktime.dto.employee.EmployeeId;
 import ru.abyssone.employeeworktime.dto.employee.GeneralEmployeeInfo;
 import ru.abyssone.employeeworktime.service.EmployeeService;
 
@@ -22,5 +23,11 @@ public class EmployeeRestController {
                 .getFilteredAndSortedEmployeesInfo(searchString, sortString);
 
         return empInfo;
+    }
+
+    @PostMapping(value = "/api/employee/delete", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ModelAndView deleteEmployee(@RequestBody EmployeeId employeeId) {
+        employeeService.delete(employeeId);
+        return new ModelAndView("redirect:/");
     }
 }

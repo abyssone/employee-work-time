@@ -3,6 +3,8 @@ package ru.abyssone.employeeworktime.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import ru.abyssone.employeeworktime.dto.employee.EmployeeId;
 import ru.abyssone.employeeworktime.dto.employee.FullEmployeeInfo;
 import ru.abyssone.employeeworktime.dto.employee.GeneralEmployeeInfo;
 import ru.abyssone.employeeworktime.entity.Employee;
@@ -23,6 +25,22 @@ public class EmployeeService {
     private final EmployeeRepository employeeRepository;
     private final EmployeeMapper employeeMapper;
     private final Validator validator;
+
+    public void delete(EmployeeId employeeId) {
+        if (employeeId == null) {
+            throw new NullPointerException("Employee is null");
+        }
+        try {
+            UUID.fromString(employeeId.getId());
+        } catch (IllegalArgumentException e) {
+            log.error(e.getMessage());
+            String msg = String.format("Incorrect employee id %s", employeeId.getId());
+            log.error(msg);
+            throw new NullPointerException(msg);
+        }
+
+        employeeRepository.deleteById(UUID.fromString(employeeId.getId()));
+    }
 
     public enum SortField {
         NAME, POSITION, CONTRACT_CONCLUSION, CONTRACT_EXPIRATION
@@ -86,8 +104,6 @@ public class EmployeeService {
 
     public List<GeneralEmployeeInfo> getFilteredAndSortedEmployeesInfo(String searchString,
                                                                        String sortString) {
-
-
 
         List<Employee> all = employeeRepository.findAllFilteredAndSorted(searchString, SortField.valueOf(sortString));
         return all.stream().map(employeeMapper::toGeneralEmployeeInfo).toList();

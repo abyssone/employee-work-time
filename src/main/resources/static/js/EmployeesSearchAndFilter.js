@@ -23,16 +23,24 @@ function updateTable(data) {
 
     data.forEach(employee => {
         let columns = [];
-        columns.push(oneLineTag("td", { textContent : employee.name}))
+
+        let link = oneLineTag("a", {href: `employee/${employee.id}`, textContent: employee.name});
+        let linkTd = document.createElement("td");
+        linkTd.appendChild(link);
+        columns.push(linkTd);
+
         columns.push(oneLineTag("td", {
             textContent : employee.contract ? employee.contract.position : "-----"
         }))
         columns.push(oneLineTag("td", {
             textContent : employee.contract ? toDDMMYYYYFormat(employee.contract.dateOfConclusion) : "-----"
         }))
+
         columns.push(oneLineTag("td", {
-            textContent : employee.contract ? employee.contract.expirationDate ? toDDMMYYYYFormat(employee.contract.expirationDate) : "-----" : "-----"
-        }))
+            textContent : employee.contract
+                ? parseStatus(employee.contract.state, employee.contract.expirationDate)
+                : '-----'
+        }));
 
         let row = oneLineTag("tr");
         columns.forEach(col => row.appendChild(col));
@@ -48,4 +56,13 @@ function toDDMMYYYYFormat(date) {
 
 function oneLineTag(tag,options){
     return Object.assign(document.createElement(tag),options);
+}
+
+function parseStatus(status, date) {
+    switch (status) {
+        case 'ACTIVE': return `Активен до ${toDDMMYYYYFormat(date)}`;
+        case 'EXPIRED': return `Истек ${toDDMMYYYYFormat(date)}`;
+        case 'UNLIMITED': return 'Бессрочный';
+        default: return 'Неизвестно';
+    }
 }

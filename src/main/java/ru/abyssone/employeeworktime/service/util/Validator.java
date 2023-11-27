@@ -85,7 +85,7 @@ public class Validator {
             }
         }
         if (end != null && start != null) {
-            if (LocalTime.parse(end).isAfter(LocalTime.parse(start))) {
+            if (LocalTime.parse(end).isBefore(LocalTime.parse(start))) {
                 String msg = String.format("end time (%s) cannot be earlier than start time (%s)", end, start);
                 log.error(msg);
                 throw new IllegalTimePeriod(msg);

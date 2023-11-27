@@ -38,7 +38,7 @@
         <addForeignKeyConstraint baseTableName="work_time_reports" baseColumnNames="contract_id"
                                  constraintName="work_time_reports_contract_id_contracts_id"
                                  referencedTableName="contracts" referencedColumnNames="id"
-                                 onUpdate="CASCADE"/>
+                                 onUpdate="CASCADE" onDelete="CASCADE" deleteCascade="true"/>
     </changeSet>
 
 </databaseChangeLog>

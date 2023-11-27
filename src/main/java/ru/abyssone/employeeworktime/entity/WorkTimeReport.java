@@ -33,6 +33,13 @@ public class WorkTimeReport {
     private AbsenceReason absenceReason;
 
     /**
+     * Трудовой договор
+     */
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "contract_id")
+    private Contract contract;
+
+    /**
      * Фактические время работы
      */
     @Embedded

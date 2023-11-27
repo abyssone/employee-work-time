@@ -35,8 +35,7 @@ public class Contract {
     /**
      * Отчеты о фактическом времени работы сотрудника за определенную дату
      */
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "contract_id")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "contract")
     @MapKey(name = "date")
     private Map<LocalDate, WorkTimeReport> workTimeReports = new HashMap<>();
 
@@ -66,7 +65,7 @@ public class Contract {
     /**
      * График работы
      */
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER)
     private WorkTimeModel workTimeModel;
 
     public void setEmployee(Employee employee) {

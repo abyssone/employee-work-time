@@ -22,6 +22,7 @@ public class CustomEmployeeRepositoryImpl implements CustomEmployeeRepository{
 
     @PersistenceContext
     private EntityManager entityManager;
+
     @Override
     public List<Employee> findAllFilteredAndSorted(String search, EmployeeService.SortField sort) {
 

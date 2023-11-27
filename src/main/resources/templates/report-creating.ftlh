@@ -18,7 +18,7 @@
                     <p class="fw-bolder">Дата отчета</p>
                     <div class="row">
                         <div class="form-floating">
-                            <input type="date" name="date" class="form-control" id="date-input"><br/>
+                            <input type="date" name="date" class="form-control" id="date-input" value="${.now?date?iso_utc}"><br/>
                             <label for="date-input" class="form-label">Дата</label>
                         </div>
                     </div>
