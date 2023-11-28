@@ -32,13 +32,4 @@ public class ExceptionalDayController {
         exceptionalDayService.save(exceptionalDayInfo);
         return "redirect:/exceptionalday/create";
     }
-
-    @ExceptionHandler(value = {IllegalExceptionalDayInfo.class})
-    public ModelAndView handleException(HttpServletRequest req, IllegalExceptionalDayInfo exception) {
-        ModelAndView mav = new ModelAndView("exception");
-        mav.addObject("exception", exception.getClass());
-        mav.addObject("url", req.getRequestURL());
-        mav.addObject("message", exception.getMessage());
-        return mav;
-    }
 }

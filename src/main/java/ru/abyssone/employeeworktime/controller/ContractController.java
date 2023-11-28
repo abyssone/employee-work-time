@@ -71,31 +71,4 @@ public class ContractController {
         reportService.save(contractId, reportInfo);
         return "redirect:/contract/{id}/report/create";
     }
-
-    @ExceptionHandler(value = {NullPointerException.class})
-    public ModelAndView handleException(HttpServletRequest req, NullPointerException exception) {
-        ModelAndView mav = new ModelAndView("exception");
-        mav.addObject("exception", exception.getClass());
-        mav.addObject("url", req.getRequestURL());
-        mav.addObject("message", exception.getMessage());
-        return mav;
-    }
-
-    @ExceptionHandler(value = {IllegalWorkTimeReportInfo.class})
-    public ModelAndView handleException(HttpServletRequest req, IllegalWorkTimeReportInfo exception) {
-        ModelAndView mav = new ModelAndView("exception");
-        mav.addObject("exception", exception.getClass());
-        mav.addObject("url", req.getRequestURL());
-        mav.addObject("message", exception.getMessage());
-        return mav;
-    }
-
-    @ExceptionHandler(value = {IllegalContractException.class})
-    public ModelAndView handleException(HttpServletRequest req, IllegalContractException exception) {
-        ModelAndView mav = new ModelAndView("exception");
-        mav.addObject("exception", exception.getClass());
-        mav.addObject("url", req.getRequestURL());
-        mav.addObject("message", exception.getMessage());
-        return mav;
-    }
 }

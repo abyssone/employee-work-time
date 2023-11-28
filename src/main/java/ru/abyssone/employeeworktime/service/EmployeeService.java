@@ -79,7 +79,6 @@ public class EmployeeService {
     public void save(GeneralEmployeeInfo employeeInfo) throws IllegalEmployeeException{
         Employee employee = employeeMapper.toEmployee(employeeInfo);
 
-        // Если entity не прошло валидацию, то оно не сохраняется в бд и передается дальше в контроллер
         try {
             validator.check(employee);
             employeeRepository.save(employee);

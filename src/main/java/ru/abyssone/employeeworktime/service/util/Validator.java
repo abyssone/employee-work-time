@@ -27,7 +27,7 @@ public class Validator {
         if (employee.getBirthDate() == null) throw new IllegalEmployeeException(String.format(
                 "Employee with id:%s doesn't contains birth date", employee.getId().toString()
         ));
-        if (employee.getBirthDate().isAfter(LocalDate.now().plusYears(18)))
+        if (employee.getBirthDate().isAfter(LocalDate.now().minusYears(18)))
             throw new IllegalEmployeeException(String.format("Employee with id:%s is younger than 18 years old." +
                     "This violates art.63 of the LC RF", employee.getId().toString()));
         if (employee.getSex() == null) throw new IllegalEmployeeException(String.format(
