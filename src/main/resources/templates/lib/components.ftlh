@@ -59,7 +59,7 @@
                     <li><a href="/employee/create" class="nav-link px-2 text-white">Сотрудник</a></li>
                     <li><a href="/contract/create" class="nav-link px-2 text-white">Контракт</a></li>
                     <li><a href="/schedule/create" class="nav-link px-2 text-white">График</a></li>
-                    <li><a href="/exceptionalday/create" class="nav-link px-2 text-white">ExDay</a></li>
+                    <li><a href="/exceptionalday" class="nav-link px-2 text-white">ExDay</a></li>
                 </ul>
 
 <#--                <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">-->

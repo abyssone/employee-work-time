@@ -51,6 +51,11 @@ public class EmployeeService {
         return all.stream().map(employeeMapper::toGeneralEmployeeInfo).toList();
     }
 
+    public List<GeneralEmployeeInfo> getAllGeneralEmployeeInfoIfContractExists() {
+        List<Employee> all = employeeRepository.findAllWithContract();
+        return all.stream().map(employeeMapper::toGeneralEmployeeInfo).toList();
+    }
+
     public List<GeneralEmployeeInfo> getGeneralEmployeeWithContractInfo() {
         List<Employee> all = employeeRepository.findAllWithContract();
         return all.stream().map(employeeMapper::toGeneralEmployeeInfo).toList();

@@ -12,4 +12,9 @@ public interface ExceptionalDayMapper {
     @Mapping(source = "exceptionalDayInfo.startTime", target = "workTime.startTime")
     @Mapping(source = "exceptionalDayInfo.endTime", target = "workTime.endTime")
     ExceptionalDay toExceptionalDay(ExceptionalDayInfo exceptionalDayInfo);
+
+    @Mapping(source = "exceptionalDay.contracts", target = "contracts", ignore = true)
+    @Mapping(source = "exceptionalDay.workTime.startTime", target = "startTime")
+    @Mapping(source = "exceptionalDay.workTime.endTime", target = "endTime")
+    ExceptionalDayInfo toExceptionalDayInfo(ExceptionalDay exceptionalDay);
 }

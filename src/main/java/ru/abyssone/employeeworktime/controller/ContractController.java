@@ -31,7 +31,7 @@ public class ContractController {
 
     @GetMapping("/contract/create")
     public String getContractCreating(@RequestParam(value = "employee_id", required = false) UUID employee_id, Model model) {
-        model.addAttribute("employees", employeeService.getAllGeneralEmployeeInfo());
+        model.addAttribute("employees", employeeService.getAllGeneralEmployeeInfoIfContractExists());
         model.addAttribute("schedules", scheduleService.findAllAsScheduleDescription());
         model.addAttribute("selected_employee_id", employee_id);
         return "contract-creating";

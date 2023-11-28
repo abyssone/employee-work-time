@@ -1,6 +1,5 @@
 package ru.abyssone.employeeworktime.service;
 
-import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -14,8 +13,8 @@ import ru.abyssone.employeeworktime.service.util.Validator;
 import ru.abyssone.employeeworktime.service.util.exception.IllegalEntityException;
 import ru.abyssone.employeeworktime.service.util.exception.IllegalExceptionalDayInfo;
 
-import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -60,5 +59,23 @@ public class ExceptionalDayService {
         contracts.stream().forEach(exceptionalDay::addContract);
 
         exceptionalDayRepository.save(exceptionalDay);
+    }
+
+    public List<ExceptionalDayInfo> getAllExceptionalDayInfo() {
+        List<ExceptionalDay> exceptionalDays = exceptionalDayRepository.findAll();
+        return exceptionalDays.stream().map(exceptionalDayMapper::toExceptionalDayInfo).toList();
+    }
+
+    public ExceptionalDayInfo getExceptionalDayInfoWithContracts(Long id) {
+        Optional<ExceptionalDay> exceptionalDay = exceptionalDayRepository.findByIdFetchContracts(id);
+        if (exceptionalDay.isEmpty()) throw new NullPointerException("not found ex day with id" + id);
+
+        ExceptionalDayInfo exceptionalDayInfo = exceptionalDayMapper.toExceptionalDayInfo(exceptionalDay.get());
+        Set<Contract> contracts = exceptionalDay.get().getContracts();
+        if (!contracts.isEmpty()) {
+            contracts.forEach(c -> exceptionalDayInfo.getContracts().add(c.getId()));
+        }
+
+        return exceptionalDayInfo;
     }
 }

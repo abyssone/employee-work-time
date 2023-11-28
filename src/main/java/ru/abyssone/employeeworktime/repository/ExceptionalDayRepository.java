@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface ExceptionalDayRepository extends JpaRepository<ExceptionalDay, Long> {
@@ -16,4 +17,9 @@ public interface ExceptionalDayRepository extends JpaRepository<ExceptionalDay, 
     List<ExceptionalDay> findExceptionalDaysByContractId(@Param("contractId") UUID contractId,
                                                          @Param("startDate") LocalDate startDate,
                                                          @Param("endDate") LocalDate endDate);
+
+
+    @Query("SELECT exDay FROM ExceptionalDay exDay LEFT JOIN FETCH exDay.contracts WHERE " +
+            "exDay.id = :id")
+    Optional<ExceptionalDay> findByIdFetchContracts(@Param("id") Long id);
 }
