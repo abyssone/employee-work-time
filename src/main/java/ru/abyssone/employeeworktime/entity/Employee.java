@@ -59,7 +59,7 @@ public class Employee {
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "employee")
     @Getter(AccessLevel.NONE)
     private Contract contract;
-    //private Optional<Account> account;
+
     public Optional<Contract> getContract() {
         if (this.contract == null) return Optional.empty();
         return Optional.of(this.contract);

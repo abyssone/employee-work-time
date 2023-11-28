@@ -15,12 +15,6 @@ import java.util.Optional;
 @Mapper
 public abstract class ContractMapper {
 
-    @Autowired
-    protected WorkTimeModelRepository workTimeModelRepository;
-
-    @Autowired
-    protected EmployeeRepository employeeRepository;
-
     public GeneralContractInfo toGeneralContractInfo(Contract contract) {
         GeneralContractInfo contractStatus = new GeneralContractInfo();
 
@@ -45,13 +39,23 @@ public abstract class ContractMapper {
     public Contract toContract(FullContractInfo contractInfo) {
         Contract contract = new Contract();
 
+        if (contractInfo.getId() != null) contract.setId(contractInfo.getId());
         contract.setDateOfConclusion(contractInfo.getDateOfConclusion());
         contract.setExpirationDate(contractInfo.getExpirationDate());
         contract.setPosition(contractInfo.getPosition());
 
-        contract.setWorkTimeModel(workTimeModelRepository.findById(contractInfo.getScheduleId()).get());
-        contract.setEmployee(employeeRepository.findById(contractInfo.getEmployeeId()).get());
-
         return contract;
+    }
+
+    public FullContractInfo toFullContractInfo(Contract contract) {
+        FullContractInfo fullContractInfo = new FullContractInfo();
+
+        fullContractInfo.setId(contract.getId());
+        fullContractInfo.setPosition(contract.getPosition());
+        fullContractInfo.setScheduleId(contract.getWorkTimeModel().getId());
+        fullContractInfo.setDateOfConclusion(contract.getDateOfConclusion());
+        fullContractInfo.setExpirationDate(contract.getExpirationDate().orElse(null));
+
+        return fullContractInfo;
     }
 }

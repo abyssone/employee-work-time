@@ -5,11 +5,9 @@ import org.springframework.stereotype.Component;
 import ru.abyssone.employeeworktime.dto.ExceptionalDayInfo;
 import ru.abyssone.employeeworktime.dto.report.WorkTimeReportInfo;
 import ru.abyssone.employeeworktime.entity.AbsenceReason;
+import ru.abyssone.employeeworktime.entity.Contract;
 import ru.abyssone.employeeworktime.entity.Employee;
-import ru.abyssone.employeeworktime.service.util.exception.IllegalEmployeeException;
-import ru.abyssone.employeeworktime.service.util.exception.IllegalExceptionalDayInfo;
-import ru.abyssone.employeeworktime.service.util.exception.IllegalTimePeriod;
-import ru.abyssone.employeeworktime.service.util.exception.IllegalWorkTimeReportInfo;
+import ru.abyssone.employeeworktime.service.util.exception.*;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -110,6 +108,25 @@ public class Validator {
         }
         if (exceptionalDayInfo.getContracts().isEmpty()) {
             throw new IllegalExceptionalDayInfo("contracts is null");
+        }
+    }
+
+    public void check(Contract contract) {
+        if (contract == null) throw new NullPointerException("contract is null");
+        if (contract.getPosition() == null || contract.getPosition().isEmpty()) {
+            throw new IllegalContractException("contract position is null");
+        }
+        if (contract.getDateOfConclusion() == null) {
+            throw new IllegalContractException("contract date of conclusion is null");
+
+        }
+        if (contract.getExpirationDate().isPresent()
+                && contract.getExpirationDate().get().isBefore(contract.getDateOfConclusion())) {
+            throw new IllegalContractException(String.format(
+                    "expiration contract date (%s) cannot be earlier than conclusion date (%s)",
+                    contract.getExpirationDate().get(),
+                    contract.getDateOfConclusion()
+            ));
         }
     }
 }

@@ -24,14 +24,23 @@ function updateTable(data) {
     data.forEach(employee => {
         let columns = [];
 
-        let link = oneLineTag("a", {href: `employee/${employee.id}`, textContent: employee.name});
-        let linkTd = document.createElement("td");
-        linkTd.appendChild(link);
-        columns.push(linkTd);
+        let employeeLink = oneLineTag("a", {href: `employee/${employee.id}`, textContent: employee.name});
+        let employeeTableCell = document.createElement("td");
+        employeeTableCell.appendChild(employeeLink);
+        columns.push(employeeTableCell);
 
-        columns.push(oneLineTag("td", {
-            textContent : employee.contract ? employee.contract.position : "-----"
-        }))
+        if (employee.contract) {
+            let contractLink = oneLineTag("a", {
+                href: `contract/${employee.contract.id}/edit`,
+                textContent: employee.contract.position
+            });
+            let contractTableCell = document.createElement("td");
+            contractTableCell.appendChild(contractLink);
+            columns.push(contractTableCell);
+        } else {
+            columns.push(oneLineTag("td", {textContent : "-----"}));
+        }
+
         columns.push(oneLineTag("td", {
             textContent : employee.contract ? toDDMMYYYYFormat(employee.contract.dateOfConclusion) : "-----"
         }))

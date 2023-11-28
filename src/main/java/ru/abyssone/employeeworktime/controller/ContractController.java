@@ -1,6 +1,7 @@
 package ru.abyssone.employeeworktime.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.websocket.server.PathParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,7 @@ import ru.abyssone.employeeworktime.service.ContractService;
 import ru.abyssone.employeeworktime.service.EmployeeService;
 import ru.abyssone.employeeworktime.service.ReportService;
 import ru.abyssone.employeeworktime.service.ScheduleService;
+import ru.abyssone.employeeworktime.service.util.exception.IllegalContractException;
 import ru.abyssone.employeeworktime.service.util.exception.IllegalWorkTimeReportInfo;
 
 import java.util.UUID;
@@ -41,6 +43,21 @@ public class ContractController {
         return "redirect:/contract/create";
     }
 
+    @GetMapping("/contract/{id}/edit")
+    public String getContractEditing(@PathVariable("id") UUID id, Model model) {
+        model.addAttribute("schedules", scheduleService.findAllAsScheduleDescription());
+        model.addAttribute("contract", contractService.getFullContractInfo(id));
+        return "contract-editing";
+    }
+
+    @PostMapping("/contract/{id}/edit")
+    public String editContract(@PathVariable("id") UUID id,
+                               @ModelAttribute FullContractInfo contractInfo) {
+        contractInfo.setId(id);
+        contractService.update(contractInfo);
+        return "redirect:/";
+    }
+
     @GetMapping("/contract/{id}/report/create")
     public String getReportCreating(@PathVariable("id") UUID id,
                                     Model model) {
@@ -66,6 +83,15 @@ public class ContractController {
 
     @ExceptionHandler(value = {IllegalWorkTimeReportInfo.class})
     public ModelAndView handleException(HttpServletRequest req, IllegalWorkTimeReportInfo exception) {
+        ModelAndView mav = new ModelAndView("exception");
+        mav.addObject("exception", exception.getClass());
+        mav.addObject("url", req.getRequestURL());
+        mav.addObject("message", exception.getMessage());
+        return mav;
+    }
+
+    @ExceptionHandler(value = {IllegalContractException.class})
+    public ModelAndView handleException(HttpServletRequest req, IllegalContractException exception) {
         ModelAndView mav = new ModelAndView("exception");
         mav.addObject("exception", exception.getClass());
         mav.addObject("url", req.getRequestURL());
