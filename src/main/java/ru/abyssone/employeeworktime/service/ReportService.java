@@ -91,6 +91,19 @@ public class ReportService {
             return null;
         }
 
+        Optional<Contract> contract = contractRepository.findById(contractId);
+        if (contract.isEmpty()) throw new NullPointerException(String.format(
+            "contract with id %s not found", contractId
+        ));
+
+        // Если указанный период выходит за рамки действия контракта, то период корректируется
+        if (startDate.isBefore(contract.get().getDateOfConclusion())) startDate = contract.get().getDateOfConclusion();
+        if (contract.get().getExpirationDate().isPresent()) {
+            if (endDate.isAfter(contract.get().getExpirationDate().get())) {
+                endDate = contract.get().getExpirationDate().get();
+            }
+        }
+
         List<ExceptionalDay> exDays = exceptionalDayRepository
                 .findExceptionalDaysByContractId(contractId, startDate, endDate);
 
@@ -110,8 +123,6 @@ public class ReportService {
             scheduledWorkTime.put(exDay.getDate(), exDay.getWorkTime());
         }
 
-        FullWorkReportsStatistic statistic = reportMapper.toFullWorkReportsStatistic(scheduledWorkTime, reports);
-
-        return statistic;
+        return reportMapper.toFullWorkReportsStatistic(scheduledWorkTime, reports);
     }
 }

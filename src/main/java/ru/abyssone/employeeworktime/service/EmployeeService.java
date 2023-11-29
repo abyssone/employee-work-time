@@ -3,7 +3,6 @@ package ru.abyssone.employeeworktime.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import ru.abyssone.employeeworktime.dto.employee.EmployeeId;
 import ru.abyssone.employeeworktime.dto.employee.FullEmployeeInfo;
 import ru.abyssone.employeeworktime.dto.employee.GeneralEmployeeInfo;
@@ -56,6 +55,11 @@ public class EmployeeService {
         return all.stream().map(employeeMapper::toGeneralEmployeeInfo).toList();
     }
 
+    public List<GeneralEmployeeInfo> getAllGeneralEmployeeInfoIfContractNotExists() {
+        List<Employee> all = employeeRepository.findAllWithoutContract();
+        return all.stream().map(employeeMapper::toGeneralEmployeeInfo).toList();
+    }
+
     public List<GeneralEmployeeInfo> getGeneralEmployeeWithContractInfo() {
         List<Employee> all = employeeRepository.findAllWithContract();
         return all.stream().map(employeeMapper::toGeneralEmployeeInfo).toList();
@@ -64,7 +68,7 @@ public class EmployeeService {
     public FullEmployeeInfo getFullEmployeeInfo(UUID employeeId) {
         Optional<Employee> employee = employeeRepository.findByIdFetchContract(employeeId);
         if (employee.isEmpty()) throw new NullPointerException(
-                String.format("Employee with id:%d is not exist", employeeId));
+                String.format("Employee with id:%s is not exist", employeeId));
         return employeeMapper.toFullEmployeeInfo(employee.get());
     }
 
@@ -77,8 +81,7 @@ public class EmployeeService {
             throw new NullPointerException(msg);
         }
 
-        GeneralEmployeeInfo employeeInfo = employeeMapper.toGeneralEmployeeInfo(employee.get());
-        return employeeInfo;
+        return employeeMapper.toGeneralEmployeeInfo(employee.get());
     }
 
     public void save(GeneralEmployeeInfo employeeInfo) throws IllegalEmployeeException{
@@ -91,7 +94,7 @@ public class EmployeeService {
             log.error(ex.getMessage());
             throw new IllegalEmployeeException(ex.getMessage());
         }
-    };
+    }
 
     public void update(GeneralEmployeeInfo employeeInfo) {
         Employee employee = employeeMapper.toEmployee(employeeInfo);

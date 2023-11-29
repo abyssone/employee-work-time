@@ -18,4 +18,8 @@ public interface EmployeeRepository extends JpaRepository<Employee, UUID>, Custo
     @Query("SELECT employee FROM Employee employee LEFT JOIN FETCH employee.contract contract " +
             "WHERE contract IS NOT NULL")
     List<Employee> findAllWithContract();
+
+    @Query("SELECT employee FROM Employee employee LEFT JOIN FETCH employee.contract contract " +
+            "WHERE contract IS NULL")
+    List<Employee> findAllWithoutContract();
 }

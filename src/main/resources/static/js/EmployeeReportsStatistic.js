@@ -55,7 +55,23 @@ function updateTable(data) {
 
        let missedTime = oneLineTag("td", { textContent : report.missedTime});
        let overtime = oneLineTag("td", { textContent : report.overtime});
-       let absenceReason = oneLineTag("td", { textContent : report.absenceReason});
+
+       let reasonText;
+       switch (report.absenceReason) {
+           case 'NO_REASON':
+               reasonText = 'Не указано';
+               break;
+           case 'SICK_LEAVE':
+               reasonText = 'Больничный';
+               break;
+           case 'BUSINESS_TRIP':
+               reasonText = 'Командировка';
+               break;
+           default:
+               reasonText = 'Неизвестно';
+               break;
+       }
+       let absenceReason = oneLineTag("td", { textContent : reasonText});
        row.appendChild(date);
        row.appendChild(scheduledTime);
        row.appendChild(actualWorkTime);
