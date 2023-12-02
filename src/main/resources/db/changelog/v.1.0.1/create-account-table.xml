@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
+
+    <changeSet id="create-account-table" author="abyssone">
+
+        <createTable tableName="accounts">
+
+            <column name="username" type="varchar(50)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="password" type="varchar(60)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="role" type="smallint">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="employee_id" type="uuid">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="create-account-employee-fk" author="abyssone">
+        <addForeignKeyConstraint baseTableName="accounts" baseColumnNames="employee_id"
+                                 constraintName="accounts_employee_id_employees_id"
+                                 referencedTableName="employees" referencedColumnNames="id"
+                                 onUpdate="CASCADE" onDelete="CASCADE" deleteCascade="true"/>
+    </changeSet>
+
+</databaseChangeLog>

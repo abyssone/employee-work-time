@@ -49,6 +49,12 @@ public class Employee {
     private LocalDate BirthDate;
 
     /**
+     * Аккаунт пользователя
+     */
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "employee")
+    private Account account;
+
+    /**
      * Пол
      */
     private Sex sex;
