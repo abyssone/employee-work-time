@@ -17,12 +17,11 @@ public class EmployeeRestController {
     private final EmployeeService employeeService;
 
     @GetMapping("/api/employee/all-info")
-    public List<GeneralEmployeeInfo> getFilteredAndSortedEmployees (@RequestParam("search") String searchString,
-                                                                    @RequestParam("sort") String sortString) {
-        List<GeneralEmployeeInfo> empInfo = employeeService
-                .getFilteredAndSortedEmployeesInfo(searchString, sortString);
+    public List<GeneralEmployeeInfo> getFilteredAndSortedEmployees
+            (@RequestParam(value = "search", required = false) String searchString,
+            @RequestParam(value = "sort", required = false) String sortString) {
 
-        return empInfo;
+        return employeeService.getFilteredAndSortedEmployeesInfo(searchString, sortString);
     }
 
     @PostMapping(value = "/api/employee/delete", consumes = MediaType.APPLICATION_JSON_VALUE)

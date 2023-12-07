@@ -12,20 +12,20 @@
     <div class="row">
         <div class="col-3">
             <div class="form-floating col-12">
-                <input type="text" class="form-control" id="search-input"><br />
-                <label for="name-input" class="form-label">Поиск</label>
+                <input type="text" class="form-control" id="search-input">
+                <label for="search-input" class="form-label">Поиск по имени</label>
             </div>
         </div>
 
         <div class="col-3">
             <div class="form-floating col-12">
-                <select type="text" class="form-select" id="sort-input">
+                <select class="form-select" id="sort-input">
                     <option value="NAME">Имени</option>
                     <option value="POSITION">Должности</option>
                     <option value="CONTRACT_CONCLUSION">Дате создания договора</option>
                     <option value="CONTRACT_EXPIRATION">Дате завершения договора</option>
                 </select>
-                <label for="name-input" class="form-label">Сортировать по</label>
+                <label for="sort-input" class="form-label">Сортировать по</label>
             </div>
         </div>
     </div>

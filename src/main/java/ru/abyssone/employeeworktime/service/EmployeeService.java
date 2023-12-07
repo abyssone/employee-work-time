@@ -112,6 +112,9 @@ public class EmployeeService {
     public List<GeneralEmployeeInfo> getFilteredAndSortedEmployeesInfo(String searchString,
                                                                        String sortString) {
 
+        if (searchString == null) searchString = "";
+        if (sortString == null) sortString = "";
+
         List<Employee> all = employeeRepository.findAllFilteredAndSorted(searchString, SortField.valueOf(sortString));
         return all.stream().map(employeeMapper::toGeneralEmployeeInfo).toList();
     }
